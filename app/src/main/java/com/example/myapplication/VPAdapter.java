@@ -15,7 +15,7 @@ public class VPAdapter extends FragmentPagerAdapter {
         super(fm);
         items = new ArrayList<Fragment>();
         items.add(new Fragment1());
-        items.add(new fragment2());
+        items.add(new Fragment2());
         items.add(new Fragment3());
 
         itext.add("전화번호");
