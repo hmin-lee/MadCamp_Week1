@@ -1,0 +1,24 @@
+{
+  "Phones": [
+    {
+      "iconDrawable": "R.drawable.baseline_account_box_black_18dp",
+      "userName": "옹뇽뇽",
+      "num": "010-2254-9875"
+    },
+    {
+      "iconDrawable": "R.drawable.baseline_account_circle_black_18dp",
+      "userName": "이히히",
+      "num": "010-5569-1354"
+    },
+    {
+      "iconDrawable": "R.drawable.baseline_account_box_black_18dp",
+      "userName": "쿠헹히",
+      "num": "010-1687-7651"
+    },
+    {
+      "iconDrawable": "R.drawable.baseline_account_circle_black_18dp",
+      "userName": "쿄이리",
+      "num": "010-0246-4764"
+    }
+  ]
+}
