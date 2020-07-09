@@ -56,8 +56,10 @@ public class Fragment2 extends Fragment {
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-                   Toast.makeText(myContext, "Image Position:" + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(myContext, "Image Position:" + position, Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(myContext, FullImageActivity.class);
+                i.putExtra("id", position);
+                startActivity(i);
             }
         });
         return myView;
