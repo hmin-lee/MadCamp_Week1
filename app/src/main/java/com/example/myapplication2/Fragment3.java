@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication2;
 
 import android.os.Bundle;
 
@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment2#newInstance} factory method to
+ * Use the {@link Fragment3#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment2 extends Fragment {
+public class Fragment3 extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +24,7 @@ public class fragment2 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public fragment2() {
+    public Fragment3() {
         // Required empty public constructor
     }
 
@@ -34,11 +34,11 @@ public class fragment2 extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment2.
+     * @return A new instance of fragment Fragment3.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment2 newInstance(String param1, String param2) {
-        fragment2 fragment = new fragment2();
+    public static Fragment3 newInstance(String param1, String param2) {
+        Fragment3 fragment = new Fragment3();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +59,6 @@ public class fragment2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment2, container, false);
+        return inflater.inflate(R.layout.fragment_3, container, false);
     }
 }
