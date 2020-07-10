@@ -32,8 +32,7 @@ import static android.app.Activity.RESULT_OK;
  * create an instance of this fragment.
  */
 public class Fragment2 extends Fragment {
-    static final int RESULT_LOAD_IMAGE = 101;
-    Uri uri;
+
 
     public Fragment2() {
         // Required empty public constructor

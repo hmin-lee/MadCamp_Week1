@@ -9,15 +9,23 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
-public class ImageDetailActivity extends Activity {
+public class ImageDetailActivity extends FragmentActivity {
     boolean isPageOpen = false;
+
+    ImageDetailFragment imageDetailFragment;
+
+    private ImageDetailPagerAdapter pagerAdapter;
+
 
     LinearLayout slideDesc;
 
@@ -33,43 +41,56 @@ public class ImageDetailActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.image_detail);
-        gestureDetector = new GestureDetector(this, new GestureListener());
+        setContentView(R.layout.image_detail_activity);
         Intent intent = getIntent();
-
         int position = intent.getExtras().getInt("id");
-        GalleryAdapter galleryAdapter = new GalleryAdapter(this);
-        ImageView imageView = findViewById(R.id.image_detail);
-        imageView.setImageResource(galleryAdapter.thumbImages[position]);
 
-        slideDesc = findViewById(R.id.image_desc);
-        translateLeftAnim = AnimationUtils.loadAnimation(this, R.anim.translate_up);
-        translateRightAnim = AnimationUtils.loadAnimation(this, R.anim.translate_down);
+        // viewPager랑 PagerAdapter 초기화
+//        viewPager = findViewById(R.id.image_pager);
+//        pagerAdapter = new ImageDetailPagerAdapter(this);
+//        viewPager.setAdapter(pagerAdapter);
+//        pagerAdapter.getItem(position);
 
-        SlidingPageAnimationListener animationListener = new SlidingPageAnimationListener();
-        translateLeftAnim.setAnimationListener(animationListener);
-        translateRightAnim.setAnimationListener(animationListener);
+        imageDetailFragment = new ImageDetailFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.image_pager, imageDetailFragment).commit();
 
-        imageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                boolean touchEvent = gestureDetector.onTouchEvent(motionEvent);
-                if (touchEvent) {
-                    Toast.makeText(getApplicationContext(), "플링함", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    if (isPageOpen) {
-                        slideDesc.startAnimation(translateRightAnim);
-                    } else {
-                        slideDesc.setVisibility(View.VISIBLE);
-                        slideDesc.startAnimation(translateLeftAnim);
-                    }
-                }
-                return true;
-            }
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", position);
 
+        imageDetailFragment.setArguments(bundle);
 
-        });
+//        GalleryAdapter galleryAdapter = new GalleryAdapter(this);
+//        ImageView imageView = findViewById(R.id.image_detail);
+//        imageView.setImageResource(galleryAdapter.thumbImages[position]);
+//
+//
+//        gestureDetector = new GestureDetector(this, new GestureListener());
+//        slideDesc = findViewById(R.id.image_desc);
+//        translateLeftAnim = AnimationUtils.loadAnimation(this, R.anim.translate_up);
+//        translateRightAnim = AnimationUtils.loadAnimation(this, R.anim.translate_down);
+//        SlidingPageAnimationListener animationListener = new SlidingPageAnimationListener();
+//        translateLeftAnim.setAnimationListener(animationListener);
+//        translateRightAnim.setAnimationListener(animationListener);
+//        imageView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                boolean touchEvent = gestureDetector.onTouchEvent(motionEvent);
+//                if (touchEvent) {
+//                    Toast.makeText(getApplicationContext(), "플링함", Toast.LENGTH_SHORT).show();
+//                    finish();
+//                } else {
+//                    if (isPageOpen) {
+//                        slideDesc.startAnimation(translateRightAnim);
+//                    } else {
+//                        slideDesc.setVisibility(View.VISIBLE);
+//                        slideDesc.startAnimation(translateLeftAnim);
+//                    }
+//                }
+//                return true;
+//            }
+//
+//
+//        });
 
 
     }
@@ -86,12 +107,10 @@ public class ImageDetailActivity extends Activity {
 
         @Override
         public void onAnimationStart(Animation animation) {
-
         }
 
         @Override
         public void onAnimationRepeat(Animation animation) {
-
         }
     }
 
