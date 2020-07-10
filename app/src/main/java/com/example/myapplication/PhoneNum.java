@@ -1,7 +1,5 @@
 package com.example.myapplication;
 
-import android.graphics.drawable.Drawable;
-
 public class PhoneNum {
     private String userName;
     private String num;
@@ -39,5 +37,7 @@ public class PhoneNum {
     public String getNum() {
         return this.num;
     }
+
+
 
 }

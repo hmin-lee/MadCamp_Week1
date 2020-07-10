@@ -31,21 +31,13 @@ public class FullPhoneActivity extends Activity {
         String userName =  Objects.requireNonNull(intent.getExtras()).getString("user_name");
         int icon =  Objects.requireNonNull(intent.getExtras()).getInt("icon");
 
-        //byte[] arr = getIntent().getByteArrayExtra("icon");
-//        Bitmap image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
-//        ImageView iconImageView = findViewById(R.id.imageView_detail);
-//        iconImageView.setImageBitmap(image);
-
-
         ImageView iconImageView = findViewById(R.id.imageView_detail) ;
         TextView nameTextView =  findViewById(R.id.textView_detail1) ;
         TextView numTextView =  findViewById(R.id.textView_detail2) ;
 
-
         iconImageView.setImageResource(icon);
         nameTextView.setText(userName);
         numTextView.setText(num);
-
 
         Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
