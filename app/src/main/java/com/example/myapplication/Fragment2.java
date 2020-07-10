@@ -2,15 +2,29 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +32,8 @@ import android.widget.GridView;
  * create an instance of this fragment.
  */
 public class Fragment2 extends Fragment {
-
+    static final int RESULT_LOAD_IMAGE = 101;
+    Uri uri;
 
     public Fragment2() {
         // Required empty public constructor
@@ -54,6 +69,20 @@ public class Fragment2 extends Fragment {
                 startActivity(i);
             }
         });
+
+        FloatingActionButton fab = myView.findViewById(R.id.image_fab);
+        fab.setOnClickListener(new FABClickListener());
+
         return myView;
     }
+
+    class FABClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(getContext(), "FAB 클릭!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }

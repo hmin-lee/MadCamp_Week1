@@ -19,7 +19,6 @@ import androidx.annotation.Nullable;
 public class ImageDetailActivity extends Activity {
     boolean isPageOpen = false;
 
-    Button button;
     LinearLayout slideDesc;
 
     GestureDetector gestureDetector;
@@ -55,15 +54,16 @@ public class ImageDetailActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 boolean touchEvent = gestureDetector.onTouchEvent(motionEvent);
-                if (touchEvent){
-                    Toast.makeText(getApplicationContext(), "플링함", Toast.LENGTH_LONG).show();
+                if (touchEvent) {
+                    Toast.makeText(getApplicationContext(), "플링함", Toast.LENGTH_SHORT).show();
                     finish();
-                }
-                if (isPageOpen) {
-                    slideDesc.startAnimation(translateRightAnim);
                 } else {
-                    slideDesc.setVisibility(View.VISIBLE);
-                    slideDesc.startAnimation(translateLeftAnim);
+                    if (isPageOpen) {
+                        slideDesc.startAnimation(translateRightAnim);
+                    } else {
+                        slideDesc.setVisibility(View.VISIBLE);
+                        slideDesc.startAnimation(translateLeftAnim);
+                    }
                 }
                 return true;
             }
