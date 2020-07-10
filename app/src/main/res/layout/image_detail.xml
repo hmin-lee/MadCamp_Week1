@@ -37,17 +37,17 @@
             android:text="설명이 들어갈 장소" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
-        android:background="#00000000">
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="right|center_vertical"-->
+<!--        android:background="#00000000">-->
 
-        <Button
-            android:id="@+id/image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:text="Open" />
-    </LinearLayout>
+<!--        <Button-->
+<!--            android:id="@+id/image_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/colorPrimaryDark"-->
+<!--            android:text="Open" />-->
+<!--    </LinearLayout>-->
 </LinearLayout>
