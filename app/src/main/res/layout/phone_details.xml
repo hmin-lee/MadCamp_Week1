@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="128dp" />
+
+    <TextView
+        android:id="@+id/textView_detail1"
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:textColor="@android:color/black"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="41dp" />
+
+    <ImageView
+        android:id="@+id/imageView_detail"
+        android:layout_width="200dp"
+        android:layout_height="211dp"
+        android:layout_gravity="center"
+        android:textAlignment="center" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="28dp" />
+
+    <TextView
+        android:id="@+id/textView_detail2"
+        android:layout_width="208dp"
+        android:layout_height="47dp"
+        android:text="New Text"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <LinearLayout
+        android:layout_width="255dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:textAlignment="center">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:text="전화" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="127dp"
+            android:layout_height="wrap_content"
+            android:text="문자" />
+    </LinearLayout>
+
+
+</LinearLayout>
+
