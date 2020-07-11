@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/image_detail_fragment"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
 
             android:contentDescription="Image Detail"
             android:scaleType="centerInside"
@@ -24,17 +24,44 @@
     <LinearLayout
         android:id="@+id/image_desc_fragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:background="#ffffff66"
         android:orientation="vertical"
+        android:padding="15dp"
         android:visibility="gone">
+        <!--Gone으로 바꿔주기-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:text="설명이 들어갈 장소" />
+            android:text="제목"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="imageTest.jpg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="촬영날짜"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="2020.07.11" />
+
     </LinearLayout>
 
 </LinearLayout>
