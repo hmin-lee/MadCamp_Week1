@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -19,7 +18,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 public class ImageDetailFragment extends Fragment {
+
+    private Integer CUR_IMG = 0;
+
     private ImageView imageView;
     public Integer[] thumbImages = {
             R.drawable.img1, R.drawable.img2, R.drawable.img3,
@@ -39,11 +43,25 @@ public class ImageDetailFragment extends Fragment {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-    Animation translateLeftAnim;
-    Animation translateRightAnim;
+    Animation translateUpAnim;
+    Animation translateDownAnim;
 
-    public ImageDetailFragment() {
+    public ImageDetailFragment(int position) {
+        CUR_IMG = position;
+        System.out.println("<<<<<<Fragment 생성자에서 넘겨줌: " + CUR_IMG);
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            CUR_IMG = getArguments().getInt("id");
+            System.out.println("<<<<<<<<<<OnCreate에서 getArg 존재 OO" + CUR_IMG);
+        } else {
+            System.out.println("<<<<<<<<<<OnCreate에서 getArg 존재 XX" + CUR_IMG);
+
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -54,33 +72,34 @@ public class ImageDetailFragment extends Fragment {
         myContext = getContext();
         imageView = myView.findViewById(R.id.image_detail_fragment);
 
-        Bundle bundle = getArguments();
-
-        int position = bundle.getInt("id");
-
-        imageView.setImageResource(thumbImages[position]);
+        imageView.setImageResource(thumbImages[CUR_IMG]);
 
         gestureDetector = new GestureDetector(myContext, new ImageDetailFragment.GestureListener());
         slideDesc = myView.findViewById(R.id.image_desc_fragment);
-        translateLeftAnim = AnimationUtils.loadAnimation(myContext, R.anim.translate_up);
-        translateRightAnim = AnimationUtils.loadAnimation(myContext, R.anim.translate_down);
+        translateUpAnim = AnimationUtils.loadAnimation(myContext, R.anim.translate_up);
+        translateDownAnim = AnimationUtils.loadAnimation(myContext, R.anim.translate_down);
         ImageDetailFragment.SlidingPageAnimationListener animationListener = new ImageDetailFragment.SlidingPageAnimationListener();
-        translateLeftAnim.setAnimationListener(animationListener);
-        translateRightAnim.setAnimationListener(animationListener);
+        translateUpAnim.setAnimationListener(animationListener);
+        translateDownAnim.setAnimationListener(animationListener);
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 boolean touchEvent = gestureDetector.onTouchEvent(motionEvent);
-                if (touchEvent) {
-                    Toast.makeText(myContext, "플링함", Toast.LENGTH_SHORT).show();
-                    getActivity().finish();
+                Toast.makeText(myContext, "플링함", Toast.LENGTH_SHORT).show();
+                if (touchEvent && isPageOpen) {
+                    slideDesc.startAnimation(translateDownAnim);
+                } else if (touchEvent) {
+//                    System.out.println("<<<<<<<<<MOTION<<<<<<<FLING:" + currentMotion);
+                    Objects.requireNonNull(getActivity()).finish();
                 } else {
                     if (isPageOpen) {
-                        slideDesc.startAnimation(translateRightAnim);
+                        slideDesc.setVisibility(View.GONE);
+                        slideDesc.startAnimation(translateDownAnim);
                     } else {
                         slideDesc.setVisibility(View.VISIBLE);
-                        slideDesc.startAnimation(translateLeftAnim);
+                        slideDesc.startAnimation(translateUpAnim);
                     }
+//                    System.out.println("<<<<<<<<<MOTION<<<<<<<ELSE"+currentMotion);
                 }
                 return true;
             }

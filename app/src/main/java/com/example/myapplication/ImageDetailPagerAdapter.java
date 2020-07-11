@@ -17,11 +17,13 @@ public class ImageDetailPagerAdapter extends FragmentPagerAdapter {
     };
     private ArrayList<Fragment> items;
 
-    public ImageDetailPagerAdapter(@NonNull FragmentManager fm, int behavior) {
-        super(fm, behavior);
-
+    public ImageDetailPagerAdapter(@NonNull FragmentManager fm) {
+        super(fm);
         items = new ArrayList<Fragment>();
-        items.add(new ImageDetailFragment());
+        for (int i = 0; i < thumbImages.length; i++) {
+            items.add(new ImageDetailFragment(i));
+        }
+
     }
 
 
@@ -35,4 +37,5 @@ public class ImageDetailPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return items.size();
     }
+
 }
