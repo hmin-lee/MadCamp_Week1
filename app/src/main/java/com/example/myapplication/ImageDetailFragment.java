@@ -48,8 +48,7 @@ public class ImageDetailFragment extends Fragment {
 
     public ImageDetailFragment(int position) {
         CUR_IMG = position;
-        System.out.println("<<<<<<Fragment 생성자에서 넘겨줌: " + CUR_IMG);
-
+//        System.out.println("<<<<<<Fragment 생성자에서 넘겨줌: " + CUR_IMG);
     }
 
     @Override
@@ -57,11 +56,12 @@ public class ImageDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             CUR_IMG = getArguments().getInt("id");
-            System.out.println("<<<<<<<<<<OnCreate에서 getArg 존재 OO" + CUR_IMG);
-        } else {
-            System.out.println("<<<<<<<<<<OnCreate에서 getArg 존재 XX" + CUR_IMG);
-
+//            System.out.println("<<<<<<<<<<OnCreate에서 getArg 존재 OO" + CUR_IMG);
         }
+//        else {
+//            System.out.println("<<<<<<<<<<OnCreate에서 getArg 존재 XX" + CUR_IMG);
+//
+//        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
