@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,14 +24,7 @@ import java.util.Objects;
 public class ImageDetailFragment extends Fragment {
 
     private Integer CUR_IMG = 0;
-
-    public Integer[] thumbImages = {
-            R.drawable.img1, R.drawable.img2, R.drawable.img3,
-            R.drawable.img4, R.drawable.img5, R.drawable.img6,
-            R.drawable.img7, R.drawable.img8, R.drawable.img9,
-            R.drawable.img10, R.drawable.img11, R.drawable.img12,
-            R.drawable.img13
-    };
+    private ImageInfo CUR_INFO;
 
     LinearLayout slideDesc;
 
@@ -41,26 +35,18 @@ public class ImageDetailFragment extends Fragment {
 
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
+ 
     Animation translateUpAnim;
     Animation translateDownAnim;
 
-    public ImageDetailFragment(int position) {
-        CUR_IMG = position;
-//        System.out.println("<<<<<<Fragment 생성자에서 넘겨줌: " + CUR_IMG);
+    public ImageDetailFragment(ImageInfo info) {
+        CUR_IMG = info.getResId();
+        CUR_INFO = info;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            CUR_IMG = getArguments().getInt("id");
-//            System.out.println("<<<<<<<<<<OnCreate에서 getArg 존재 OO" + CUR_IMG);
-        }
-//        else {
-//            System.out.println("<<<<<<<<<<OnCreate에서 getArg 존재 XX" + CUR_IMG);
-//
-//        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -70,8 +56,12 @@ public class ImageDetailFragment extends Fragment {
         View myView = inflater.inflate(R.layout.image_detail_fragment, container, false);
         myContext = getContext();
         ImageView imageView = myView.findViewById(R.id.image_detail_fragment);
+        TextView textViewTitle = myView.findViewById(R.id.image_detail_title);
+        TextView textViewDatetime = myView.findViewById(R.id.image_detail_datetime);
 
-        imageView.setImageResource(thumbImages[CUR_IMG]);
+        imageView.setImageResource(CUR_INFO.getResId());
+        textViewTitle.setText(CUR_INFO.getTitle());
+        textViewDatetime.setText(CUR_INFO.getDatetime());
 
         gestureDetector = new GestureDetector(myContext, new ImageDetailFragment.GestureListener());
         slideDesc = myView.findViewById(R.id.image_desc_fragment);
@@ -84,26 +74,11 @@ public class ImageDetailFragment extends Fragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 boolean touchEvent = gestureDetector.onTouchEvent(motionEvent);
-                if (touchEvent && isPageOpen) {
-                    Toast.makeText(myContext, "플링함", Toast.LENGTH_SHORT).show();
-                    slideDesc.startAnimation(translateDownAnim);
-                } else if (touchEvent) {
-                    Toast.makeText(myContext, "플링함", Toast.LENGTH_SHORT).show();
-                    Objects.requireNonNull(getActivity()).finish();
-                } else {
-                    //TODO: 더블탭으로 바꿔보기
-                    if (isPageOpen) {
-                        slideDesc.setVisibility(View.GONE);
-                        slideDesc.startAnimation(translateDownAnim);
-                    } else {
-                        slideDesc.setVisibility(View.VISIBLE);
-                        slideDesc.startAnimation(translateUpAnim);
-                    }
+                if(touchEvent){
+                    System.out.println("Logic is Migrated to Gesture");
                 }
                 return true;
             }
-
-
         });
 
         return myView;
@@ -136,13 +111,33 @@ public class ImageDetailFragment extends Fragment {
             } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 return false; // Left to right
             }
-
             if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                if(!isPageOpen){
+                    slideDesc.setVisibility(View.VISIBLE);
+                    slideDesc.startAnimation(translateUpAnim);
+                }
                 return false; // Bottom to top
             } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                if (isPageOpen) {
+                    slideDesc.startAnimation(translateDownAnim);
+                } else {
+                    Objects.requireNonNull(getActivity()).finish();
+                }
                 return true; // Top to bottom
             }
             return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            if (isPageOpen) {
+                slideDesc.setVisibility(View.GONE);
+                slideDesc.startAnimation(translateDownAnim);
+            } else {
+                slideDesc.setVisibility(View.VISIBLE);
+                slideDesc.startAnimation(translateUpAnim);
+            }
+            super.onLongPress(e);
         }
     }
 }

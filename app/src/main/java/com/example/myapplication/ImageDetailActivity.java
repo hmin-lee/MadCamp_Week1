@@ -10,8 +10,6 @@ import androidx.viewpager.widget.ViewPager;
 
 public class ImageDetailActivity extends FragmentActivity {
 
-    ImageDetailFragment imageDetailFragment;
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
