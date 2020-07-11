@@ -1,13 +1,11 @@
 package com.example.myapplication;
 
-import android.graphics.drawable.Drawable;
-
 public class PhoneNum {
     private String userName;
     private String num;
-    private Drawable  iconDrawable;
+    private int iconDrawable ;
 
-    public void setIcon(Drawable icon) {
+    public void setIcon(int icon) {
         iconDrawable = icon ;
     }
     public void setUser(String user) {
@@ -17,13 +15,18 @@ public class PhoneNum {
         num = newnum ;
     }
 
-    public PhoneNum(Drawable  iconDrawable, String userName, String num){
+    public PhoneNum(int iconDrawable, String userName, String num){
         this.iconDrawable = iconDrawable;
         this.userName = userName;
         this.num = num;
     }
+    public PhoneNum(String userName, String num){
+        this.iconDrawable = R.drawable.baseline_account_box_black_18dp;
+        this.userName = userName;
+        this.num = num;
+    }
 
-    public Drawable  getIcon() {
+    public int getIcon() {
         return this.iconDrawable ;
     }
 
@@ -34,5 +37,7 @@ public class PhoneNum {
     public String getNum() {
         return this.num;
     }
+
+
 
 }
