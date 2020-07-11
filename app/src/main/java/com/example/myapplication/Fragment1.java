@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +14,19 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,7 +67,7 @@ public class Fragment1 extends Fragment {
                 String number = cursor.getString(numberIndex);
 
                 PhoneNum phone = new PhoneNum(name,number);
-                phone.setIcon(R.drawable.baseline_account_box_black_18dp); //default image from phone data
+                phone.setIcon(R.drawable.user); //default image from phone data
 
                 datas.add(phone);
             }
@@ -70,7 +78,11 @@ public class Fragment1 extends Fragment {
 
     }
 
-    PhoneAdapter phonenum = new PhoneAdapter();
+    private ArrayList<PhoneNum> phonenum = new ArrayList<>();
+    private ArrayList<PhoneNum> phonenum2;
+    private SearchAdapter adapter2;
+
+    private EditText editSearch;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     @Override
@@ -79,22 +91,19 @@ public class Fragment1 extends Fragment {
 //        InitializePhoneBook();
         jsonParsing(getJsonString());
 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>"+phonenum.getCount());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             List<PhoneNum> phoneBooks = getContacts();
-            System.out.println(phoneBooks.size());
             if (phoneBooks.size() != 0) {
                 int size = phoneBooks.size();
                 for (int i = 0; i < size; i++) {
                     PhoneNum phone = phoneBooks.get(i);
-                    phonenum.addNum(phone.getIcon(), phone.getUserName(), phone.getNum());
+                    phonenum.add(phone);
                 }
             }
         }
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>"+phonenum.getCount());
     }
 
     private String getJsonString() {
@@ -129,7 +138,7 @@ public class Fragment1 extends Fragment {
 
                 //int drawable = getResources().getDrawable(id,null);
 
-                phonenum.addNum(id, name, num);
+                phonenum.add(new PhoneNum(id, name, num));
 
             }
         } catch (Exception e) {
@@ -146,9 +155,31 @@ public class Fragment1 extends Fragment {
         View myView = inflater.inflate(R.layout.fragment_1, container, false);
         ListView listView = myView.findViewById(R.id.listView);
         final Context phoneContext = getContext();
-        PhoneAdapter adapter = phonenum;
-        listView.setAdapter(adapter);
+        //listView.setAdapter(adapter);
 
+        //search tab
+        final EditText editSearch = myView.findViewById(R.id.editSearch);
+         //copy the data
+        phonenum2 = new ArrayList<PhoneNum>();
+        phonenum2.addAll(phonenum);
+        adapter2 = new SearchAdapter(phonenum, getContext());
+        listView.setAdapter(adapter2);
+
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // input창에 문자를 입력할때마다 호출된다.
+                // search 메소드를 호출한다.
+                String text = editSearch.getText().toString();
+                search(text);
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -165,13 +196,35 @@ public class Fragment1 extends Fragment {
                 i.putExtra("user_name", userName);
                 i.putExtra("icon", icon);
                 startActivity(i);
-
             }
         });
+
         return myView;
     }
 
+    public void search(String charText) {
+        // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
+        phonenum.clear();
+        // 문자 입력이 없을때는 모든 데이터를 보여준다.
+        if (charText.length() == 0) {
+            phonenum.addAll(phonenum2);
+        }else{
+            // 리스트의 모든 데이터를 검색한다.
+            for(int i = 0;i < phonenum2.size(); i++)
+            {
+                // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
+                if (phonenum2.get(i).getUserName().toLowerCase().contains(charText))
+                {
+                    // 검색된 데이터를 리스트에 추가한다.
+                    phonenum.add(phonenum2.get(i));
+                }
+            }
+        }
+        // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
+        adapter2.notifyDataSetChanged();
+    }
+
     public void InitializePhoneBook() {
-        phonenum.addNum(R.drawable.tangled, "라푼젤", "01071969761");
+        phonenum.add(new PhoneNum(R.drawable.tangle1, "라푼젤", "01071969761"));
     }
 }
