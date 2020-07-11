@@ -79,7 +79,7 @@ public class Fragment2 extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(getContext(), "FAB 클릭!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "FAB 클릭!! 구현 안함...ㅎ", Toast.LENGTH_SHORT).show();
         }
     }
 
