@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment2">
 
     <GridView
@@ -15,5 +16,15 @@
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/image_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_baseline_add_photo_alternate_24"
+        android:contentDescription="FAB for adding Photo"
+        android:layout_margin="16dp"
+        app:backgroundTint="@android:color/holo_orange_light"
+        />
 
 </FrameLayout>
