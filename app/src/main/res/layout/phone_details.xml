@@ -57,17 +57,20 @@
         android:orientation="horizontal"
         android:textAlignment="center">
 
+
         <Button
             android:id="@+id/button"
-            android:layout_width="126dp"
+            android:layout_width="128dp"
             android:layout_height="wrap_content"
             android:text="전화" />
+
 
         <Button
             android:id="@+id/button2"
             android:layout_width="127dp"
             android:layout_height="wrap_content"
             android:text="문자" />
+
     </LinearLayout>
 
 

@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Fragment1 extends Fragment {
     public Fragment1() {
@@ -91,7 +92,7 @@ public class Fragment1 extends Fragment {
 //        InitializePhoneBook();
         jsonParsing(getJsonString());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        if (Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
@@ -109,7 +110,7 @@ public class Fragment1 extends Fragment {
     private String getJsonString() {
         String json = "";
         try {
-            InputStream is = getActivity().getAssets().open("Phone.json");
+            InputStream is = Objects.requireNonNull(getActivity()).getAssets().open("Phone.json");
             int fileSize = is.available();
             byte[] buffer = new byte[fileSize];
             is.read(buffer);
@@ -134,7 +135,7 @@ public class Fragment1 extends Fragment {
                 String num = phoneObject.getString("num");
 
                 String s = icon.replace("R.drawable.", "");
-                int id = getContext().getResources().getIdentifier(s, "drawable", getContext().getPackageName());
+                int id = Objects.requireNonNull(getContext()).getResources().getIdentifier(s, "drawable", getContext().getPackageName());
 
                 //int drawable = getResources().getDrawable(id,null);
 
@@ -203,24 +204,19 @@ public class Fragment1 extends Fragment {
     }
 
     public void search(String charText) {
-        // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
         phonenum.clear();
-        // 문자 입력이 없을때는 모든 데이터를 보여준다.
         if (charText.length() == 0) {
             phonenum.addAll(phonenum2);
         }else{
             // 리스트의 모든 데이터를 검색한다.
             for(int i = 0;i < phonenum2.size(); i++)
             {
-                // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
                 if (phonenum2.get(i).getUserName().toLowerCase().contains(charText))
                 {
-                    // 검색된 데이터를 리스트에 추가한다.
                     phonenum.add(phonenum2.get(i));
                 }
             }
         }
-        // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
         adapter2.notifyDataSetChanged();
     }
 
