@@ -85,12 +85,13 @@ public class ImageDetailFragment extends Fragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 boolean touchEvent = gestureDetector.onTouchEvent(motionEvent);
-                Toast.makeText(myContext, "플링함", Toast.LENGTH_SHORT).show();
                 if (touchEvent && isPageOpen) {
+                    Toast.makeText(myContext, "플링함", Toast.LENGTH_SHORT).show();
                     slideDesc.startAnimation(translateDownAnim);
                 } else if (touchEvent) {
-//                    System.out.println("<<<<<<<<<MOTION<<<<<<<FLING:" + currentMotion);
+                    Toast.makeText(myContext, "플링함", Toast.LENGTH_SHORT).show();
                     Objects.requireNonNull(getActivity()).finish();
+//                    System.out.println("<<<<<<<<<MOTION<<<<<<<FLING:" + currentMotion);
                 } else {
                     if (isPageOpen) {
                         slideDesc.setVisibility(View.GONE);
