@@ -24,7 +24,6 @@ public class ImageDetailFragment extends Fragment {
 
     private Integer CUR_IMG = 0;
 
-    private ImageView imageView;
     public Integer[] thumbImages = {
             R.drawable.img1, R.drawable.img2, R.drawable.img3,
             R.drawable.img4, R.drawable.img5, R.drawable.img6,
@@ -70,7 +69,7 @@ public class ImageDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.image_detail_fragment, container, false);
         myContext = getContext();
-        imageView = myView.findViewById(R.id.image_detail_fragment);
+        ImageView imageView = myView.findViewById(R.id.image_detail_fragment);
 
         imageView.setImageResource(thumbImages[CUR_IMG]);
 
@@ -91,8 +90,8 @@ public class ImageDetailFragment extends Fragment {
                 } else if (touchEvent) {
                     Toast.makeText(myContext, "플링함", Toast.LENGTH_SHORT).show();
                     Objects.requireNonNull(getActivity()).finish();
-//                    System.out.println("<<<<<<<<<MOTION<<<<<<<FLING:" + currentMotion);
                 } else {
+                    //TODO: 더블탭으로 바꿔보기
                     if (isPageOpen) {
                         slideDesc.setVisibility(View.GONE);
                         slideDesc.startAnimation(translateDownAnim);
@@ -100,7 +99,6 @@ public class ImageDetailFragment extends Fragment {
                         slideDesc.setVisibility(View.VISIBLE);
                         slideDesc.startAnimation(translateUpAnim);
                     }
-//                    System.out.println("<<<<<<<<<MOTION<<<<<<<ELSE"+currentMotion);
                 }
                 return true;
             }
