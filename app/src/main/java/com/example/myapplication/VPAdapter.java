@@ -20,7 +20,7 @@ public class VPAdapter extends FragmentPagerAdapter {
 
         itext.add("전화번호");
         itext.add("사진");
-        itext.add("몰랑");
+        itext.add("다이어리");
     }
     @NonNull
     @Override
