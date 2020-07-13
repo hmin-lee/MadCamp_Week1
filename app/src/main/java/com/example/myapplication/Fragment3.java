@@ -2,6 +2,9 @@ package com.example.myapplication;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,6 +27,8 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -37,6 +42,10 @@ public class Fragment3 extends Fragment {
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     MaterialCalendarView materialCalendarView;
+  
+    public static DiaryDBHelper dbHelper;
+    public static SQLiteDatabase db;
+  
     Map<String, String>Todo = new HashMap<>();
     Map<String, Integer> CntTodo = new HashMap<>();
     Map<String, String>Diary = new HashMap<>();
@@ -47,13 +56,20 @@ public class Fragment3 extends Fragment {
     public void makeData() {
         Todo.put("2020,7,13","오늘 할 일 만들기,자료 있는 날짜 표시하게 하기");
         Todo.put("2020,7,15", "발표하기,밥 먹기");
-        Diary.put("2020,7,13","오늘은 아침에 일찍 일어나 씻고 밥먹고 N1에 왔다");
-        Diary.put("2020,7,11","내일은 일요일이다!!! 너무 신난다!!");
-        Diary.put("2020,7,12","오늘은 아침에 일어나 순대국밥으로 해장을 하고 논문을 읽었다. 매우 뿌듯하다.");
+
+        InsertDiary("2020,7,13", "오늘은 아침에 일찍 일어나 씻고 밥먹고 N1에 왔다");
+        InsertDiary("2020,7,11", "내일은 일요일이다!!! 너무 신난다!!");
+        InsertDiary("2020,7,12", "오늘은 아침에 일어나 순대국밥으로 해장을 하고 논문을 읽었다. 매우 뿌듯하다.");
+        InsertDiary("2020,7,10", "내일은 토요일이다! 실습실 가는 날이다.");
+        InsertDiary("2020,7,14", "7 곱하기 2 = 14이다. 7월 14일이다.");
+      
 
         for(String key : Todo.keySet()){
             result[cntkey] = key;
             cntkey++;
+
+        Diary = showDiary();
+
         }
     }
 
@@ -68,11 +84,16 @@ public class Fragment3 extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.fragment_3);
+
+        Log.d(TAG, ">>> onCreate: DiaryDBHelper 생성");
+        dbHelper = new DiaryDBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+        dbHelper.onUpgrade(db, 1, 1); // test용
     }
 
 
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             Bundle savedInstanceState){
+                             Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_3, container, false);
         materialCalendarView = view.findViewById(R.id.calendarView);
 
@@ -110,8 +131,7 @@ public class Fragment3 extends Fragment {
 
                 final String shot_Day = Year + "." + Month + "." + Day;
                 final String key = Year + "," + Month + "," + Day;
-
-
+                String todo = new String();
                 if (Todo.containsKey(key)) {
                     String[] todo = Todo.get(key).split(",");
                     String printodo ="";
@@ -120,13 +140,11 @@ public class Fragment3 extends Fragment {
                     }
                     textView_todo.setText(printodo);
                 }
-
-
+              
                 textView_day.setText(shot_Day);
                 textView_todo_title.setText("오늘 할 일");
                 textView_diary_title.setText("오늘의 일기");
                 textView_diary.setText(Diary.get(key));
-
 
                 materialCalendarView.clearSelection();
 
@@ -198,7 +216,6 @@ public class Fragment3 extends Fragment {
             public void onClick(View view) {
                 if (isLocked) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-//                    alertDialog.setMessage("비밀번호를 입력하세요");
                     View dialogView = inflater.inflate(R.layout.password, container, false);
                     alertDialog.setView(dialogView);
                     pwEditText = (EditText) dialogView.findViewById(R.id.check_pass);
@@ -206,13 +223,13 @@ public class Fragment3 extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             String pwd = checkPassword();
-                            if(pwEditText.getText().toString().equals(pwd)){
+                            if (pwEditText.getText().toString().equals(pwd)) {
                                 Toast.makeText(getContext(), "UnLock!", Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "onCreateView: 비밀번호 맞음");
                                 isLocked = false;
                                 lockButton.setSelected(true);
                                 contentLayout.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 Toast.makeText(getContext(), "비번틀림!", Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "onCreateView: 비밀번호 틀림");
                             }
@@ -235,9 +252,10 @@ public class Fragment3 extends Fragment {
     }
 
     private String checkPassword() {
-        String password="1111";
+        String password = "1111";
         return password;
     }
+
     private class ApiSimulator extends AsyncTask<Void, Void, List<CalendarDay>> {
 
         String[] Time_Result;
@@ -261,7 +279,7 @@ public class Fragment3 extends Fragment {
             /*월은 0이 1월 년,일은 그대로*/
             //string 문자열인 Time_Result 을 받아와서 ,를 기준으로짜르고 string을 int 로 변환
 
-            for(int i = 0 ; i < Time_Result.length ; i ++) {
+            for (int i = 0; i < Time_Result.length; i++) {
                 if (Time_Result[i] != null) {
 
                     CalendarDay day = CalendarDay.from(calendar);
@@ -273,7 +291,7 @@ public class Fragment3 extends Fragment {
                     dates.add(day);
                     calendar.set(year, month - 1, dayy);
                 }
-              
+
             }
             return dates;
         }
@@ -289,6 +307,66 @@ public class Fragment3 extends Fragment {
     }
 
     public Fragment3() {
+    }
+
+    public static boolean isExistDiary(String date) {
+        db = dbHelper.getReadableDatabase();
+        String sql = "SELECT * FROM diary WHERE date='"+date+"';";
+        Cursor cursor = db.rawQuery(sql, null);
+        boolean res = false;
+        while (cursor.moveToNext()) {
+            res = true;
+            Log.d(TAG, "isExistDiary: 다이어리:" + date + ", " + cursor.getString(2));
+        }
+        cursor.close();
+        db.close();
+        return res;
+    }
+
+    public static void InsertDiary(String date, String content) {
+        if (isExistDiary(date)) {
+            Log.d(TAG, "InsertDiary: 이미 존재함: "+date);
+        } else {
+            db = dbHelper.getWritableDatabase();
+            Log.d(TAG, "InsertDiary: 존재하지 않음: "+date);
+            String sql = "insert into diary('date', 'content') values(?,?);";
+            SQLiteStatement st = db.compileStatement(sql);
+            st.bindString(1, date); //date가 들어갈 장소. 만약 존재하면 update라고 해야겠네.
+            st.bindString(2, content); // content
+            st.execute();
+        }
+        db.close();
+    }
+
+    public static void UpdateDiary(String date, String content){
+        if(isExistDiary(date)){
+            Log.d(TAG, "UpdateDiary: 다이어리 존재함");
+            db = dbHelper.getWritableDatabase();
+            String sql = "UPDATE diary SET content=? WHERE date=?";
+            SQLiteStatement st = db.compileStatement(sql);
+            st.bindString(1, content);
+            st.bindString(2, date);
+            st.execute();
+            db.close();
+        }else{
+            Log.d(TAG, "UpdateDiary: 다이어리 존재하지 않음");
+        }
+    }
+
+    public static Map<String, String> showDiary() {
+        db = dbHelper.getReadableDatabase();
+        Map<String, String> res = new HashMap<>();
+        String sql = "select * from diary";
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            String date = cursor.getString(1); // date
+            String content = cursor.getString(2); // content
+            Log.d(TAG, "showDiary: Show Diary. [Data]: date: " + date + ", content: " + content);
+            res.put(date, content);
+        }
+        cursor.close();
+        db.close();
+        return res;
     }
 
 }

@@ -22,6 +22,14 @@
                 android:layout_height="match_parent"
                 app:mcv_selectionColor="#a9dbf0cb"
                 app:mcv_showOtherDates="defaults" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="15dp"
+                android:background="#C29FF4" />
             <!-- 버튼 -->
             <LinearLayout
                 android:id="@+id/third_content"
