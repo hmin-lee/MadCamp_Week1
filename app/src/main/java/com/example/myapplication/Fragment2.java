@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -117,16 +118,7 @@ public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGall
         public void onClick(View view) {
             Toast.makeText(getContext(), "FAB 클릭!! 구현 안함...ㅎ", Toast.LENGTH_SHORT).show();
             try {
-//                dispatchTakePictureIntent();
-                File imagePath = new File(myContext.getFilesDir(), "images");
-//                Log.d(TAG, "onClick: FAB 클릭"+file.toString());
-                for (File s : imagePath.listFiles()) {
-                    Log.d(TAG, "onClick: string:" + s.getPath());
-                    if (new File(s.getPath()).exists())
-                        Log.d(TAG, "onClick: EXISTS!!");
-                    else
-                        Log.d(TAG, "onClick: NOT_EXISTS!!");
-                }
+                dispatchTakePictureIntent();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -140,13 +132,12 @@ public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGall
         // Create an Image File name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = myContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imagePath = new File(myContext.getFilesDir(), "images");
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imagePath      /* directory */
         );
-
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
@@ -169,6 +160,7 @@ public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGall
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
+                Log.d(TAG, "dispatchTakePictureIntent: photoFile:"+photoFile.toString());
                 Uri photoURI = FileProvider.getUriForFile(myContext,
                         "com.example.myapplication.fileprovider",
                         photoFile);
@@ -179,19 +171,14 @@ public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGall
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK){
+            Toast.makeText(myContext, "파일을 잘 가져왔습니다.", Toast.LENGTH_SHORT).show();
 
-        switch (requestCode) {
-            case REQUEST_TAKE_PHOTO:
-                if (resultCode == Activity.RESULT_OK && data.hasExtra("data")) {
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    if (bitmap != null) {
-                        Toast.makeText(myContext, "onActivityResult: 이미지 파일 가져왔음", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-                break;
+            // Refresh this Fragment
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
         }
     }
 }

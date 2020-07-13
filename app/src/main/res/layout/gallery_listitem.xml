@@ -9,5 +9,6 @@
         android:scaleType="centerInside"
         android:layout_width="110dp"
         android:layout_height="110dp"
+        android:padding="3dp"
         android:id="@+id/gallery_item"/>
 </RelativeLayout>
