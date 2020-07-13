@@ -3,10 +3,10 @@ package com.example.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,13 +27,13 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGalleryListener {
     private static final String TAG = "Fragment2_1";
     public static ArrayList< String> mImages;
     Context myContext;
+    File previousPhotoFile;
 
     // For Using Camera Activity
     static final int REQUEST_IMAGE_CAPTURE = 101;
@@ -150,31 +150,34 @@ public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGall
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(myContext.getPackageManager()) != null) {
             // Create the File where the photo should go
-            File photoFile = null;
+            previousPhotoFile = null;
             try {
-                photoFile = createImageFile();
+                previousPhotoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Log.d(TAG, "dispatchTakePictureIntent: Error!!!");
                 ex.printStackTrace();
             }
             // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Log.d(TAG, "dispatchTakePictureIntent: photoFile:"+photoFile.toString());
+            if (previousPhotoFile != null) {
+                Log.d(TAG, "dispatchTakePictureIntent: photoFile:"+ previousPhotoFile.toString());
                 Uri photoURI = FileProvider.getUriForFile(myContext,
                         "com.example.myapplication.fileprovider",
-                        photoFile);
+                        previousPhotoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK){
-            Toast.makeText(myContext, "파일을 잘 가져왔습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(myContext, "파일["+previousPhotoFile.toString()+"]을 잘 가져왔습니다.", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "onActivityResult: previousPhotoFile: "+previousPhotoFile.toString());
+
 
             // Refresh this Fragment
             FragmentTransaction ft = getFragmentManager().beginTransaction();
