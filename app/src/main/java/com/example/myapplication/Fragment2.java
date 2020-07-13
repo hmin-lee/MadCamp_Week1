@@ -1,47 +1,35 @@
 package com.example.myapplication;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fragment2#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Fragment2 extends Fragment {
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGalleryListener {
+    private static final String TAG = "Fragment2_1";
+    public static ArrayList<Integer> mImages;
+    Context myContext;
 
     public Fragment2() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment2.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Fragment2 newInstance(String param1, String param2) {
         Fragment2 fragment = new Fragment2();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +37,64 @@ public class Fragment2 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        mImages = new ArrayList<>();
+        Integer[] tmp = {
+                R.drawable.img1, R.drawable.img2, R.drawable.img3,
+                R.drawable.img4, R.drawable.img5, R.drawable.img6,
+                R.drawable.img7, R.drawable.img8, R.drawable.img9,
+                R.drawable.img10, R.drawable.img11, R.drawable.img12,
+                R.drawable.img13, R.drawable.img1, R.drawable.img2, R.drawable.img3,
+                R.drawable.img4, R.drawable.img5, R.drawable.img6,
+                R.drawable.img7, R.drawable.img8, R.drawable.img9,
+        };
+        Collections.addAll(mImages, tmp);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment2, container, false);
+        View myView = inflater.inflate(R.layout.fragment_2, container, false);
+        myContext = getContext();
+
+        initRecyclerView(myView);
+
+
+        FloatingActionButton fab = myView.findViewById(R.id.image_fab);
+        fab.setOnClickListener(new FABClickListener());
+
+        return myView;
     }
+
+    private void initRecyclerView(View view) {
+        Log.d(TAG, "initRecyclerView: init RecyclerView");
+        int numOfColumns = 3;
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+
+        GalleryRecyclerAdapter galleryRecyclerAdapter = new GalleryRecyclerAdapter(myContext, mImages, this);
+
+        recyclerView.setAdapter(galleryRecyclerAdapter);
+        recyclerView.setHasFixedSize(true);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(myContext, numOfColumns));
+
+    }
+
+    @Override
+    public void onGalleryClick(int position) {
+        Intent intent = new Intent(myContext, ImageDetailActivity.class);
+        intent.putExtra("id", position);
+        startActivity(intent);
+    }
+
+    class FABClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(getContext(), "FAB 클릭!! 구현 안함...ㅎ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }

@@ -1,24 +1,44 @@
-{
-  "Phones": [
-    {
-      "iconDrawable": "R.drawable.baseline_account_box_black_18dp",
-      "userName": "옹뇽뇽",
-      "num": "010-2254-9875"
-    },
-    {
-      "iconDrawable": "R.drawable.baseline_account_circle_black_18dp",
-      "userName": "이히히",
-      "num": "010-5569-1354"
-    },
-    {
-      "iconDrawable": "R.drawable.baseline_account_box_black_18dp",
-      "userName": "쿠헹히",
-      "num": "010-1687-7651"
-    },
-    {
-      "iconDrawable": "R.drawable.baseline_account_circle_black_18dp",
-      "userName": "쿄이리",
-      "num": "010-0246-4764"
-    }
-  ]
+{ "Phones" : [
+  {
+    "iconDrawable" : "R.drawable.ann1",
+    "userName" : "Anna",
+    "num" : "010-2254-9875"
+  },
+  {
+    "iconDrawable" : "R.drawable.elsa1",
+    "userName" : "Elsa",
+    "num" : "010-5569-1354"
+  },
+  {
+    "iconDrawable" : "R.drawable.olaf1",
+    "userName" : "Olaf",
+    "num" : "010-1687-7651"
+  },
+  {
+    "iconDrawable" : "R.drawable.tangle1",
+    "userName" : "Tangled",
+    "num" : "010-0246-4764"
+  },
+  {
+    "iconDrawable" : "R.drawable.ann1",
+    "userName" : "Bana",
+    "num" : "010-2254-5875"
+  },
+  {
+    "iconDrawable" : "R.drawable.elsa1",
+    "userName" : "Elka",
+    "num" : "010-5569-6354"
+  },
+  {
+    "iconDrawable" : "R.drawable.olaf1",
+    "userName" : "Olab",
+    "num" : "010-1687-3651"
+  },
+  {
+    "iconDrawable" : "R.drawable.tangle1",
+    "userName" : "Tangl",
+    "num" : "010-0246-4754"
+  }
+
+]
 }

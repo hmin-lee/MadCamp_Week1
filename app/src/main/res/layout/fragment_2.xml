@@ -4,35 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment1">
+    tools:context=".Fragment2">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/editSearch"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:hint="  Search the User!"/>
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-
+        android:id="@+id/recyclerview"
+        />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/phone_fab"
+        android:id="@+id/image_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@drawable/add"
+        android:src="@drawable/ic_baseline_add_photo_alternate_24"
         android:contentDescription="FAB for adding Photo"
         android:layout_margin="16dp"
-        app:backgroundTint="@android:color/holo_purple"
+        app:backgroundTint="@android:color/holo_orange_light"
         />
 
-    </FrameLayout>
-
+</FrameLayout>
