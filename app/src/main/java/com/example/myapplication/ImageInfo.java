@@ -5,6 +5,10 @@ public class ImageInfo {
     private String title;
     private String datetime;
 
+    private ImageInfo() {
+
+    }
+
     public Integer getResId() {
         return resId;
     }
@@ -15,10 +19,6 @@ public class ImageInfo {
 
     public String getDatetime() {
         return datetime;
-    }
-
-    private ImageInfo() {
-
     }
 
     public static class Builder {

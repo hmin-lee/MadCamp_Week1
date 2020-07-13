@@ -23,10 +23,10 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
     private ArrayList<Integer> mImages = new ArrayList<>();
     private Context mContext;
-private OnGalleryListener mOnGalleryListener;
+    private OnGalleryListener mOnGalleryListener;
 
 
-    public GalleryRecyclerAdapter(Context context, ArrayList<Integer> mImages,OnGalleryListener onGalleryListener) {
+    public GalleryRecyclerAdapter(Context context, ArrayList<Integer> mImages, OnGalleryListener onGalleryListener) {
         this.mContext = context;
         this.mImages = mImages;
         this.mOnGalleryListener = onGalleryListener;
@@ -57,6 +57,11 @@ private OnGalleryListener mOnGalleryListener;
         return mImages.size();
     }
 
+    // for clicking on an item
+    public interface OnGalleryListener {
+        void onGalleryClick(int position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // 위젯을 메모리에 넣음.
         ImageView imageView;
@@ -77,10 +82,5 @@ private OnGalleryListener mOnGalleryListener;
         public void onClick(View view) {
             onGalleryListener.onGalleryClick(getAdapterPosition());
         }
-    }
-
-    // for clicking on an item
-    public interface OnGalleryListener {
-        void onGalleryClick(int position);
     }
 }

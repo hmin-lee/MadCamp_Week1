@@ -11,7 +11,7 @@ public class VPAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> items;
     private ArrayList<String> itext = new ArrayList<String>();
 
-    public VPAdapter(FragmentManager fm){
+    public VPAdapter(FragmentManager fm) {
         super(fm);
         items = new ArrayList<Fragment>();
         items.add(new Fragment1());
@@ -22,9 +22,10 @@ public class VPAdapter extends FragmentPagerAdapter {
         itext.add("사진");
         itext.add("다이어리");
     }
+
     @NonNull
     @Override
-    public  CharSequence getPageTitle (int position) {
+    public CharSequence getPageTitle(int position) {
         return itext.get(position);
     }
 

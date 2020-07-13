@@ -22,21 +22,17 @@ import java.util.Objects;
 
 public class ImageDetailFragment extends Fragment {
 
-    private Integer CUR_IMG = 0;
-    private ImageInfo CUR_INFO;
-
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     LinearLayout slideDesc;
 
     GestureDetector gestureDetector;
     Context myContext;
     boolean isPageOpen = false;
-
-
-    private static final int SWIPE_MIN_DISTANCE = 120;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
     Animation translateUpAnim;
     Animation translateDownAnim;
+    private Integer CUR_IMG = 0;
+    private ImageInfo CUR_INFO;
 
     public ImageDetailFragment(ImageInfo info) {
         CUR_IMG = info.getResId();

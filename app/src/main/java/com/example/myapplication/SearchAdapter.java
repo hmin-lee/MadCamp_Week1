@@ -1,4 +1,5 @@
 package com.example.myapplication;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class SearchAdapter extends BaseAdapter {
@@ -18,11 +18,12 @@ public class SearchAdapter extends BaseAdapter {
     private LayoutInflater inflate;
     private UserViewHolder viewHolder;
 
-    public SearchAdapter(ArrayList<PhoneNum> list, Context context){
+    public SearchAdapter(ArrayList<PhoneNum> list, Context context) {
         this.list = list;
         this.mContext = context;
         this.inflate = LayoutInflater.from(context);
     }
+
     public SearchAdapter() {
     }
 
@@ -52,8 +53,8 @@ public class SearchAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        if(convertView == null){
-            convertView = inflate.inflate(R.layout.listview_item,null);
+        if (convertView == null) {
+            convertView = inflate.inflate(R.layout.listview_item, null);
 
             viewHolder = new UserViewHolder();
             viewHolder.txticon = convertView.findViewById(R.id.imageView1);
@@ -61,8 +62,8 @@ public class SearchAdapter extends BaseAdapter {
 
             convertView.setTag(viewHolder);
 
-        }else{
-            viewHolder = (UserViewHolder)convertView.getTag();
+        } else {
+            viewHolder = (UserViewHolder) convertView.getTag();
         }
 
         // 리스트에 있는 데이터를 리스트뷰 셀에 뿌린다.
@@ -72,7 +73,7 @@ public class SearchAdapter extends BaseAdapter {
         return convertView;
     }
 
-     class UserViewHolder {
+    class UserViewHolder {
         ImageView txticon;
         TextView txtname;
     }

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGalleryListener {
-    public static ArrayList<Integer> mImages;
     private static final String TAG = "Fragment2_1";
+    public static ArrayList<Integer> mImages;
     Context myContext;
 
     public Fragment2() {

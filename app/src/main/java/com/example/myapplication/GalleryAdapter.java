@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 public class GalleryAdapter extends BaseAdapter {
 
-    private Context mContext;
     public Integer[] thumbImages = {
             R.drawable.img1, R.drawable.img2, R.drawable.img3,
             R.drawable.img4, R.drawable.img5, R.drawable.img6,
@@ -19,6 +18,7 @@ public class GalleryAdapter extends BaseAdapter {
             R.drawable.img4, R.drawable.img5, R.drawable.img6,
             R.drawable.img7, R.drawable.img8, R.drawable.img9,
     };
+    private Context mContext;
 
 
     public GalleryAdapter(Context mContext) {
