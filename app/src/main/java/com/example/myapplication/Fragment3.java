@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -12,11 +15,15 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +48,7 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 
 public class Fragment3 extends Fragment {
+    private static final String TAG = "Fragment3";
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     MaterialCalendarView materialCalendarView;
@@ -62,11 +70,19 @@ public class Fragment3 extends Fragment {
         }
     }
 
+    // LockScreen Button
+    private static boolean isLocked = true;
+    ImageButton lockButton;
+    TextView textView;
+    EditText pwEditText;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.fragment_3);
     }
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -129,21 +145,66 @@ public class Fragment3 extends Fragment {
                 Log.i("shot_Day test", shot_Day + "");
                 materialCalendarView.clearSelection();
 
-                //Toast.makeText(getActivity().getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        // Views about Lock
+        lockButton = view.findViewById(R.id.third_lock);
+        textView = view.findViewById(R.id.third_text);
+
+        isLocked = true;
+        lockButton.setSelected(false);
+        lockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isLocked) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+//                    alertDialog.setMessage("비밀번호를 입력하세요");
+                    View dialogView = inflater.inflate(R.layout.password, container, false);
+                    alertDialog.setView(dialogView);
+                    pwEditText = (EditText) dialogView.findViewById(R.id.check_pass);
+                    alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            String pwd = checkPassword();
+                            if(pwEditText.getText().toString().equals(pwd)){
+                                Toast.makeText(getContext(), "UnLock!", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "onCreateView: 비밀번호 맞음");
+                                isLocked = false;
+                                lockButton.setSelected(true);
+                                textView.setVisibility(View.VISIBLE);
+                            }else{
+                                Toast.makeText(getContext(), "비번틀림!", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "onCreateView: 비밀번호 틀림");
+                            }
+                        }
+                    });
+                    alertDialog.show();
+                } else {
+                    Toast.makeText(getContext(), "Locked!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onCreateView: isLocked False");
+                    isLocked = true;
+                    lockButton.setSelected(false);
+                    textView.setVisibility(View.GONE);
+                }
+            }
+
+
+        });
+
         return view;
     }
 
-
-
-
-
+    private String checkPassword() {
+        String password="1111";
+        return password;
+    }
     private class ApiSimulator extends AsyncTask<Void, Void, List<CalendarDay>> {
 
         String[] Time_Result;
 
-        ApiSimulator(String[] Time_Result){
+        ApiSimulator(String[] Time_Result) {
             this.Time_Result = Time_Result;
         }
 
@@ -161,6 +222,7 @@ public class Fragment3 extends Fragment {
             /*특정날짜 달력에 점표시해주는곳*/
             /*월은 0이 1월 년,일은 그대로*/
             //string 문자열인 Time_Result 을 받아와서 ,를 기준으로짜르고 string을 int 로 변환
+
             for(int i = 0 ; i < Time_Result.length ; i ++) {
                 if (Time_Result[i] != null) {
 
@@ -173,6 +235,7 @@ public class Fragment3 extends Fragment {
                     dates.add(day);
                     calendar.set(year, month - 1, dayy);
                 }
+              
             }
             return dates;
         }
@@ -183,7 +246,7 @@ public class Fragment3 extends Fragment {
             if (Objects.requireNonNull(getActivity()).isFinishing()) {
                 return;
             }
-            materialCalendarView.addDecorator(new EventDecorator(Color.rgb(244,201,107), calendarDays, getActivity()));
+            materialCalendarView.addDecorator(new EventDecorator(Color.rgb(244, 201, 107), calendarDays, getActivity()));
         }
     }
 
