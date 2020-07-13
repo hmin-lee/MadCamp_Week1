@@ -1,11 +1,7 @@
 package com.example.myapplication;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,16 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,16 +24,10 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executors;
@@ -73,7 +58,7 @@ public class Fragment3 extends Fragment {
     // LockScreen Button
     private static boolean isLocked = true;
     ImageButton lockButton;
-    TextView textView;
+    LinearLayout contentLayout;
     EditText pwEditText;
 
 
@@ -84,7 +69,7 @@ public class Fragment3 extends Fragment {
     }
 
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState){
         final View view = inflater.inflate(R.layout.fragment_3, container, false);
         materialCalendarView = view.findViewById(R.id.calendarView);
@@ -151,7 +136,7 @@ public class Fragment3 extends Fragment {
 
         // Views about Lock
         lockButton = view.findViewById(R.id.third_lock);
-        textView = view.findViewById(R.id.third_text);
+        contentLayout = view.findViewById(R.id.third_text);
 
         isLocked = true;
         lockButton.setSelected(false);
@@ -173,7 +158,7 @@ public class Fragment3 extends Fragment {
                                 Log.d(TAG, "onCreateView: 비밀번호 맞음");
                                 isLocked = false;
                                 lockButton.setSelected(true);
-                                textView.setVisibility(View.VISIBLE);
+                                contentLayout.setVisibility(View.VISIBLE);
                             }else{
                                 Toast.makeText(getContext(), "비번틀림!", Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "onCreateView: 비밀번호 틀림");
@@ -186,7 +171,7 @@ public class Fragment3 extends Fragment {
                     Log.d(TAG, "onCreateView: isLocked False");
                     isLocked = true;
                     lockButton.setSelected(false);
-                    textView.setVisibility(View.GONE);
+                    contentLayout.setVisibility(View.GONE);
                 }
             }
 
