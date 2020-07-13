@@ -16,7 +16,6 @@
             android:layout_width="400dp"
             android:layout_height="400dp"
             android:contentDescription="Image Detail"
-            android:scaleType="centerInside"
             tools:srcCompat="@tools:sample/avatars" />
     </LinearLayout>
 
