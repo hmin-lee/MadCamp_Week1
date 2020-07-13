@@ -27,8 +27,6 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -42,34 +40,36 @@ public class Fragment3 extends Fragment {
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     MaterialCalendarView materialCalendarView;
-  
-    public static DiaryDBHelper dbHelper;
+
+    public static DiaryDBHelper diaryDBHelper;
+    public static ToDoDBHelper toDoDBHelper;
     public static SQLiteDatabase db;
-  
-    Map<String, String>Todo = new HashMap<>();
+
+
+    Map<String, String> Todo = new HashMap<>();
     Map<String, Integer> CntTodo = new HashMap<>();
-    Map<String, String>Diary = new HashMap<>();
-    String [] result = new String[100];
+    Map<String, String> Diary = new HashMap<>();
+    String[] result = new String[100];
     int cntkey = 0;
 
 
     public void makeData() {
-        Todo.put("2020,7,13","오늘 할 일 만들기,자료 있는 날짜 표시하게 하기");
-        Todo.put("2020,7,15", "발표하기,밥 먹기");
+        InsertTodo("2020,7,13", "오늘 할 일 만들기,자료 있는 날짜 표시하게 하기");
+        InsertTodo("2020,7,15", "발표하기,밥 먹기");
 
         InsertDiary("2020,7,13", "오늘은 아침에 일찍 일어나 씻고 밥먹고 N1에 왔다");
         InsertDiary("2020,7,11", "내일은 일요일이다!!! 너무 신난다!!");
         InsertDiary("2020,7,12", "오늘은 아침에 일어나 순대국밥으로 해장을 하고 논문을 읽었다. 매우 뿌듯하다.");
         InsertDiary("2020,7,10", "내일은 토요일이다! 실습실 가는 날이다.");
         InsertDiary("2020,7,14", "7 곱하기 2 = 14이다. 7월 14일이다.");
-      
 
-        for(String key : Todo.keySet()){
-            result[cntkey] = key;
-            cntkey++;
 
         Diary = showDiary();
+        Todo = showTodo();
 
+        for (String key : Todo.keySet()) {
+            result[cntkey] = key;
+            cntkey++;
         }
     }
 
@@ -83,12 +83,13 @@ public class Fragment3 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.fragment_3);
 
         Log.d(TAG, ">>> onCreate: DiaryDBHelper 생성");
-        dbHelper = new DiaryDBHelper(getContext());
-        db = dbHelper.getReadableDatabase();
-        dbHelper.onUpgrade(db, 1, 1); // test용
+        diaryDBHelper = new DiaryDBHelper(getContext());
+        toDoDBHelper = new ToDoDBHelper(getContext());
+//        db = dbHelper.getReadableDatabase();
+//        dbHelper.onUpgrade(db, 1, 1); // test용
+//        db.close();
     }
 
 
@@ -131,16 +132,18 @@ public class Fragment3 extends Fragment {
 
                 final String shot_Day = Year + "." + Month + "." + Day;
                 final String key = Year + "," + Month + "," + Day;
-                String todo = new String();
+
                 if (Todo.containsKey(key)) {
                     String[] todo = Todo.get(key).split(",");
-                    String printodo ="";
-                    for (String elt : todo){
-                        printodo = printodo+ "-  "+elt +"\n";
+                    String printodo = "";
+                    for (String elt : todo) {
+                        printodo = printodo + "-  " + elt + "\n";
                     }
                     textView_todo.setText(printodo);
+                } else {
+                    textView_todo.setText("");
                 }
-              
+
                 textView_day.setText(shot_Day);
                 textView_todo_title.setText("오늘 할 일");
                 textView_diary_title.setText("오늘의 일기");
@@ -151,15 +154,16 @@ public class Fragment3 extends Fragment {
                 ImageButton addDiaryButton = view.findViewById(R.id.Diary_button);
                 addDiaryButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view){
+                    public void onClick(View view) {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                         View diaryView = inflater.inflate(R.layout.add_diary, container, false);
                         alertDialog.setView(diaryView);
-                        final EditText diaryText =  diaryView.findViewById(R.id.diary_text);
+                        final EditText diaryText = diaryView.findViewById(R.id.diary_text);
                         alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String diary = diaryText.getText().toString();
+                                InsertDiary(key, diary);
                                 Diary.put(key, diary);
                                 textView_diary.setText(Diary.get(key));
                             }
@@ -170,31 +174,26 @@ public class Fragment3 extends Fragment {
                 ImageButton addToDoButton = view.findViewById(R.id.To_Do_button);
                 addToDoButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view){
+                    public void onClick(View view) {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                         View todoView = inflater.inflate(R.layout.add_todo, container, false);
                         alertDialog.setView(todoView);
-                        final EditText todoText =  todoView.findViewById(R.id.todo_text);
+                        final EditText todoText = todoView.findViewById(R.id.todo_text);
                         alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String todo = todoText.getText().toString();
-                                if (!Todo.containsKey(key)){
+                                if (!Todo.containsKey(key)) {
                                     result[cntkey] = key;
-                                    Todo.put(key, todo);
-                                    textView_todo.setText("-  "+todo);
-                                }else{
-                                    String addtodo = Todo.get(key);
-                                    Todo.put(key, addtodo+","+todo);
-                                    if (Todo.containsKey(key)) {
-                                        String[] todolst = Todo.get(key).split(",");
-                                        String printodo = "";
-                                        for (String elt : todolst) {
-                                            printodo = printodo + "-  " + elt + "\n";
-                                        }
-                                        textView_todo.setText(printodo);
-                                    }
                                 }
+                                InsertTodo(key, todo);
+                                Todo.put(key, todo);
+                                String[] todolist = Todo.get(key).split(",");
+                                String printodo = "";
+                                for (String elt : todolist) {
+                                    printodo = printodo + "-  " + elt + "\n";
+                                }
+                                textView_todo.setText(printodo);
                             }
                         });
                         alertDialog.show();
@@ -310,8 +309,8 @@ public class Fragment3 extends Fragment {
     }
 
     public static boolean isExistDiary(String date) {
-        db = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM diary WHERE date='"+date+"';";
+        db = diaryDBHelper.getReadableDatabase();
+        String sql = "SELECT * FROM diary WHERE date='" + date + "';";
         Cursor cursor = db.rawQuery(sql, null);
         boolean res = false;
         while (cursor.moveToNext()) {
@@ -323,13 +322,44 @@ public class Fragment3 extends Fragment {
         return res;
     }
 
+    public static boolean isExistTodo(String date) {
+        db = toDoDBHelper.getReadableDatabase();
+        String sql = "SELECT * FROM todo WHERE date='" + date + "';";
+        Cursor cursor = db.rawQuery(sql, null);
+        boolean res = false;
+        while (cursor.moveToNext()) {
+            res = true;
+            Log.d(TAG, "isExistTodo: 다이어리:" + date + ", " + cursor.getString(2));
+        }
+        cursor.close();
+        db.close();
+        return res;
+    }
+
     public static void InsertDiary(String date, String content) {
         if (isExistDiary(date)) {
-            Log.d(TAG, "InsertDiary: 이미 존재함: "+date);
+            Log.d(TAG, "InsertDiary: 이미 존재함: " + date);
+            UpdateDiary(date, content);
         } else {
-            db = dbHelper.getWritableDatabase();
-            Log.d(TAG, "InsertDiary: 존재하지 않음: "+date);
+            db = diaryDBHelper.getWritableDatabase();
+            Log.d(TAG, "InsertDiary: 존재하지 않음: " + date);
             String sql = "insert into diary('date', 'content') values(?,?);";
+            SQLiteStatement st = db.compileStatement(sql);
+            st.bindString(1, date); //date가 들어갈 장소. 만약 존재하면 update라고 해야겠네.
+            st.bindString(2, content); // content
+            st.execute();
+            db.close();
+        }
+    }
+
+    public static void InsertTodo(String date, String content) {
+        if (isExistTodo(date)) {
+            Log.d(TAG, "InsertTodo: 이미 존재함: " + date);
+            UpdateTodo(date, content);
+        } else {
+            db = toDoDBHelper.getWritableDatabase();
+            Log.d(TAG, "InsertTodo: 존재하지 않음: " + date);
+            String sql = "insert into todo('date', 'content') values(?,?);";
             SQLiteStatement st = db.compileStatement(sql);
             st.bindString(1, date); //date가 들어갈 장소. 만약 존재하면 update라고 해야겠네.
             st.bindString(2, content); // content
@@ -338,25 +368,43 @@ public class Fragment3 extends Fragment {
         db.close();
     }
 
-    public static void UpdateDiary(String date, String content){
-        if(isExistDiary(date)){
+    public static void UpdateDiary(String date, String content) {
+        if (isExistDiary(date)) {
             Log.d(TAG, "UpdateDiary: 다이어리 존재함");
-            db = dbHelper.getWritableDatabase();
+            db = diaryDBHelper.getWritableDatabase();
             String sql = "UPDATE diary SET content=? WHERE date=?";
             SQLiteStatement st = db.compileStatement(sql);
             st.bindString(1, content);
             st.bindString(2, date);
             st.execute();
             db.close();
-        }else{
+        } else {
             Log.d(TAG, "UpdateDiary: 다이어리 존재하지 않음");
         }
     }
 
+    public static void UpdateTodo(String date, String content) {
+        if (isExistTodo(date)) {
+            Log.d(TAG, "UpdateTodo: 투두 존재함");
+            db = toDoDBHelper.getWritableDatabase();
+            String sql = "UPDATE todo SET content=? WHERE date=?";
+            SQLiteStatement st = db.compileStatement(sql);
+            st.bindString(1, content);
+            st.bindString(2, date);
+            st.execute();
+            db.close();
+        } else {
+            Log.d(TAG, "UpdateTodo: 다이어리 존재하지 않음");
+        }
+    }
+
     public static Map<String, String> showDiary() {
-        db = dbHelper.getReadableDatabase();
+        db = diaryDBHelper.getReadableDatabase();
+
         Map<String, String> res = new HashMap<>();
+
         String sql = "select * from diary";
+
         Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
             String date = cursor.getString(1); // date
@@ -364,6 +412,27 @@ public class Fragment3 extends Fragment {
             Log.d(TAG, "showDiary: Show Diary. [Data]: date: " + date + ", content: " + content);
             res.put(date, content);
         }
+
+        cursor.close();
+        db.close();
+        return res;
+    }
+
+    public static Map<String, String> showTodo() {
+        db = toDoDBHelper.getReadableDatabase();
+
+        Map<String, String> res = new HashMap<>();
+
+        String sql = "select * from todo";
+
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            String date = cursor.getString(1); // date
+            String content = cursor.getString(2); // content
+            Log.d(TAG, "showTodo: Show Todo. [Data]: date: " + date + ", content: " + content);
+            res.put(date, content);
+        }
+
         cursor.close();
         db.close();
         return res;
