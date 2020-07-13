@@ -42,32 +42,34 @@ public class Fragment3 extends Fragment {
 
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     MaterialCalendarView materialCalendarView;
-    Map<String, String[]> Todo = new HashMap<>();
-    Map<String, String> Diary = new HashMap<>();
-    String[] result = new String[100];
-
+  
     public static DiaryDBHelper dbHelper;
     public static SQLiteDatabase db;
+  
+    Map<String, String>Todo = new HashMap<>();
+    Map<String, Integer> CntTodo = new HashMap<>();
+    Map<String, String>Diary = new HashMap<>();
+    String [] result = new String[100];
+    int cntkey = 0;
+
 
     public void makeData() {
-        Todo.put("2020,7,13", new String[]{"오늘 할 일 만들기", "자료 있는 날짜 표시하게 하기"});
-        Todo.put("2020,7,15", new String[]{"발표하기", "밥 먹기"});
-//        Diary.put("2020,7,13", "오늘은 아침에 일찍 일어나 씻고 밥먹고 N1에 왔다");
-//        Diary.put("2020,7,11", "내일은 일요일이다!!! 너무 신난다!!");
-//        Diary.put("2020,7,12", "오늘은 아침에 일어나 순대국밥으로 해장을 하고 논문을 읽었다. 매우 뿌듯하다.");
-        // 임시 데이터. 이 값들은 DB에 들어있어야해
+        Todo.put("2020,7,13","오늘 할 일 만들기,자료 있는 날짜 표시하게 하기");
+        Todo.put("2020,7,15", "발표하기,밥 먹기");
+
         InsertDiary("2020,7,13", "오늘은 아침에 일찍 일어나 씻고 밥먹고 N1에 왔다");
         InsertDiary("2020,7,11", "내일은 일요일이다!!! 너무 신난다!!");
         InsertDiary("2020,7,12", "오늘은 아침에 일어나 순대국밥으로 해장을 하고 논문을 읽었다. 매우 뿌듯하다.");
         InsertDiary("2020,7,10", "내일은 토요일이다! 실습실 가는 날이다.");
         InsertDiary("2020,7,14", "7 곱하기 2 = 14이다. 7월 14일이다.");
+      
+
+        for(String key : Todo.keySet()){
+            result[cntkey] = key;
+            cntkey++;
 
         Diary = showDiary();
 
-        int i = 0;
-        for (String key : Todo.keySet()) {
-            result[i] = key;
-            i++;
         }
     }
 
@@ -124,31 +126,80 @@ public class Fragment3 extends Fragment {
                 TextView textView_day = view.findViewById(R.id.day);
                 TextView textView_todo_title = view.findViewById(R.id.to_do_title);
                 TextView textView_diary_title = view.findViewById(R.id.diary_title);
-                TextView textView_diary = view.findViewById(R.id.diary);
-                TextView textView_todo = view.findViewById(R.id.to_do);
+                final TextView textView_diary = view.findViewById(R.id.diary);
+                final TextView textView_todo = view.findViewById(R.id.to_do);
 
-
-                Log.i("Year test", Year + "");
-                Log.i("Month test", Month + "");
-                Log.i("Day test", Day + "");
-
-                String shot_Day = Year + "." + Month + "." + Day;
-                String key = Year + "," + Month + "," + Day;
+                final String shot_Day = Year + "." + Month + "." + Day;
+                final String key = Year + "," + Month + "," + Day;
                 String todo = new String();
-
                 if (Todo.containsKey(key)) {
-                    for (String values : Objects.requireNonNull(Todo.get(key))) {
-                        todo = todo + "-  " + values + "\n";
+                    String[] todo = Todo.get(key).split(",");
+                    String printodo ="";
+                    for (String elt : todo){
+                        printodo = printodo+ "-  "+elt +"\n";
                     }
+                    textView_todo.setText(printodo);
                 }
+              
                 textView_day.setText(shot_Day);
                 textView_todo_title.setText("오늘 할 일");
                 textView_diary_title.setText("오늘의 일기");
                 textView_diary.setText(Diary.get(key));
-                textView_todo.setText(todo);
 
-                Log.i("shot_Day test", shot_Day + "");
                 materialCalendarView.clearSelection();
+
+                ImageButton addDiaryButton = view.findViewById(R.id.Diary_button);
+                addDiaryButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view){
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                        View diaryView = inflater.inflate(R.layout.add_diary, container, false);
+                        alertDialog.setView(diaryView);
+                        final EditText diaryText =  diaryView.findViewById(R.id.diary_text);
+                        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String diary = diaryText.getText().toString();
+                                Diary.put(key, diary);
+                                textView_diary.setText(Diary.get(key));
+                            }
+                        });
+                        alertDialog.show();
+                    }
+                });
+                ImageButton addToDoButton = view.findViewById(R.id.To_Do_button);
+                addToDoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view){
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                        View todoView = inflater.inflate(R.layout.add_todo, container, false);
+                        alertDialog.setView(todoView);
+                        final EditText todoText =  todoView.findViewById(R.id.todo_text);
+                        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String todo = todoText.getText().toString();
+                                if (!Todo.containsKey(key)){
+                                    result[cntkey] = key;
+                                    Todo.put(key, todo);
+                                    textView_todo.setText("-  "+todo);
+                                }else{
+                                    String addtodo = Todo.get(key);
+                                    Todo.put(key, addtodo+","+todo);
+                                    if (Todo.containsKey(key)) {
+                                        String[] todolst = Todo.get(key).split(",");
+                                        String printodo = "";
+                                        for (String elt : todolst) {
+                                            printodo = printodo + "-  " + elt + "\n";
+                                        }
+                                        textView_todo.setText(printodo);
+                                    }
+                                }
+                            }
+                        });
+                        alertDialog.show();
+                    }
+                });
 
             }
         });
