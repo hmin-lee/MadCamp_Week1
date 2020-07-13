@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +40,7 @@ public class FullPhoneActivity extends Activity {
         nameTextView.setText(userName);
         numTextView.setText(num);
 
-        Button btn = findViewById(R.id.button);
+        ImageButton btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             String callnum = "tel:" + num;
             @Override
@@ -58,7 +59,7 @@ public class FullPhoneActivity extends Activity {
             }
         });
 
-        Button btn2 = findViewById(R.id.button2);
+        ImageButton btn2 = findViewById(R.id.button2);
         btn2.setOnClickListener(new View.OnClickListener() {
             String smsnum = "sms:" + num;
             @Override

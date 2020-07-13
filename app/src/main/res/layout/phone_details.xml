@@ -40,40 +40,48 @@
 
     <ImageView
         android:id="@+id/imageView_detail"
-        android:layout_width="200dp"
+        android:layout_width="151dp"
         android:layout_height="211dp"
         android:layout_gravity="center"
-        android:textAlignment="center"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:textAlignment="center" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="30dp" />
 
     <LinearLayout
-        android:layout_width="255dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:textAlignment="center">
+        android:orientation="horizontal">
 
-
-        <Button
+        <ImageButton
             android:id="@+id/button"
-            android:layout_width="128dp"
-            android:layout_height="wrap_content"
-            android:text="전화" />
+            android:layout_width="90dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:src="@drawable/call" />
 
+        <Space
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button2"
-            android:layout_width="127dp"
-            android:layout_height="wrap_content"
-            android:text="문자" />
-
+            android:layout_width="90dp"
+            android:layout_height="80dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            android:src="@drawable/sms" />
     </LinearLayout>
 
-
 </LinearLayout>
+
 
 
