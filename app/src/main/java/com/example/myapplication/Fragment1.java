@@ -32,7 +32,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,78 +39,18 @@ import java.util.Objects;
 import static android.content.ContentValues.TAG;
 
 public class Fragment1 extends Fragment {
-    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    public static PhoneDBHelper phoneDBHelper;
-    public static SQLiteDatabase db;
-    private ArrayList<PhoneNum> phonenum = new ArrayList<>();
-    private ArrayList<PhoneNum> phonenum2;
-    private ArrayList<PhoneNum> phonebook;
-    private SearchAdapter adapter2;
-    private EditText editSearch;
     public Fragment1() {
         // Required empty public constructor
     }
+
+    public static PhoneDBHelper phoneDBHelper;
+    public static SQLiteDatabase db;
 
     public static Fragment1 newInstance() {
         Fragment1 fragment = new Fragment1();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public static boolean isExistPhoneBook(String name) {
-        db = phoneDBHelper.getReadableDatabase();
-        String sql = "SELECT * FROM phonebook WHERE name='" + name + "';";
-        Cursor cursor = db.rawQuery(sql, null);
-        boolean res = false;
-        while (cursor.moveToNext()) {
-            res = true;
-            Log.d(TAG, "isExistDiary: 다이어리:" + name + ", " + cursor.getString(2));
-        }
-        cursor.close();
-        db.close();
-        return res;
-    }
-
-    public static void InsertPhoneBook(int icon, String name, String num) {
-        db = phoneDBHelper.getWritableDatabase();
-        String sql = "insert into PhoneBook('icon', 'name', 'num') values(?,?,?);";
-        SQLiteStatement st = db.compileStatement(sql);
-        st.bindString(1, "" + icon);
-        st.bindString(2, name);
-        st.bindString(3, num);
-        st.execute();
-        db.close();
-    }
-
-    public static void DeletePhoneBook(int icon, String name1, String num1) {
-        db = phoneDBHelper.getWritableDatabase();
-        String sql = "delete from PhoneBook where num = ? and name = ?;";
-        SQLiteStatement st = db.compileStatement(sql);
-        st.bindString(1, num1);
-        st.bindString(2, name1);
-        st.execute();
-        db.close();
-    }
-
-    public static ArrayList<PhoneNum> showPhoneBook() {
-        db = phoneDBHelper.getReadableDatabase();
-        ArrayList<PhoneNum> res = new ArrayList<>();
-
-        String sql = "select * from phonebook";
-
-        Cursor cursor = db.rawQuery(sql, null);
-        while (cursor.moveToNext()) {
-            String icon = cursor.getString(1); // date
-            String name = cursor.getString(2);
-            String num = cursor.getString(3);// content
-            //Log.d(TAG, "showDiary: Show Diary. [Data]: date: " + name + ", content: " + content);
-            res.add(new PhoneNum(Integer.parseInt(icon), name, num));
-        }
-
-        cursor.close();
-        db.close();
-        return res;
     }
 
     public ArrayList<PhoneNum> getContacts() {
@@ -143,6 +82,14 @@ public class Fragment1 extends Fragment {
         return datas;
 
     }
+
+    private ArrayList<PhoneNum> phonenum = new ArrayList<>();
+    private ArrayList<PhoneNum> phonenum2;
+    private ArrayList<PhoneNum> phonebook;
+    private SearchAdapter adapter2;
+
+    private EditText editSearch;
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -181,7 +128,7 @@ public class Fragment1 extends Fragment {
             byte[] buffer = new byte[fileSize];
             is.read(buffer);
             is.close();
-            json = new String(buffer, StandardCharsets.UTF_8);
+            json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -234,7 +181,61 @@ public class Fragment1 extends Fragment {
         adapter2 = new SearchAdapter(phonebook, getContext());
         listView.setAdapter(adapter2);
 
-        editSearch.addTextChangedListener(new         class PhoneFABClickListener implements View.OnClickListener {
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String text = editSearch.getText().toString();
+                search(text);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                // get item
+                PhoneNum item = (PhoneNum) parent.getItemAtPosition(position);
+
+                String num = item.getNum();
+                String userName = item.getUserName();
+                int icon = item.getIcon();
+
+                Intent i = new Intent(phoneContext, FullPhoneActivity.class);
+                i.putExtra("phone_num", num);
+                i.putExtra("user_name", userName);
+                i.putExtra("icon", icon);
+                startActivity(i);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long l) {
+                PhoneNum item = (PhoneNum) parent.getItemAtPosition(position);
+
+                String num = item.getNum();
+                final String userName = item.getUserName();
+                int icon = item.getIcon();
+
+                phonebook.remove(item);
+                DeletePhoneBook(icon, userName, num);
+                adapter2.notifyDataSetChanged();
+
+                return true;
+            }
+        });
+
+        FloatingActionButton phone_fab = myView.findViewById(R.id.phone_fab);
+
+
+        class PhoneFABClickListener implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
@@ -256,79 +257,10 @@ public class Fragment1 extends Fragment {
                 });
                 alertDialog.show();
             }
-        })
-
-        listView.setOnItemClickListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String text = editSearch.getText().toString();
-                search(text);
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
-                PhoneNum item = (PhoneNum) parent.getItemAtPosition(position);
-
-                String num = item.getNum();
-                String userName = item.getUserName();
-                int icon = item.getIcon();
-
-                Intent i = new Intent(phoneContext, FullPhoneActivity.class);
-                i.putExtra("phone_num", num);
-                i.putExtra("user_name", userName);
-                i.putExtra("icon", icon);
-                startActivity(i);
-            }
-        });
-
-        FloatingActionButton phone_fab = myView.findViewById(R.id.phone_fab);
-
-
-AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long l) {
-                PhoneNum item = (PhoneNum) parent.getItemAtPosition(position);
-
-                String num = item.getNum();
-                final String userName = item.getUserName();
-                int icon = item.getIcon();
-
-                phonebook.remove(item);
-                DeletePhoneBook(icon, userName, num);
-                adapter2.notifyDataSetChanged();
-
-                return true;
-            }
         }
         phone_fab.setOnClickListener(new PhoneFABClickListener());
         return myView;
     }
-
-//    public static void UpdatePhoneBook(int icon, String name, String num) {
-//        if (isExistPhoneBook(name)) {
-//            db = phoneDBHelper.getWritableDatabase();
-//            String sql = "UPDATE PhoneBook SET icon=?, num=? WHERE name=?";
-//            SQLiteStatement st = db.compileStatement(sql);
-//            st.bindString(1, ""+icon);
-//            st.bindString(2, name);
-//            st.bindString(3, num);
-//            st.execute();
-//            db.close();
-//        } else {
-//            Log.d(TAG, "UpdateDiary: 다이어리 존재하지 않음");
-//        }
-//    }
 
     public void search(String charText) {
         phonebook.clear();
@@ -349,6 +281,78 @@ AdapterView.OnItemLongClickListener() {
 
     public void InitializePhoneBook() {
         phonenum.add(new PhoneNum(R.drawable.tangle1, "라푼젤", "01071969761"));
+    }
+
+    public static boolean isExistPhoneBook(String name) {
+        db = phoneDBHelper.getReadableDatabase();
+        String sql = "SELECT * FROM phonebook WHERE name='" + name + "';";
+        Cursor cursor = db.rawQuery(sql, null);
+        boolean res = false;
+        while (cursor.moveToNext()) {
+            res = true;
+            Log.d(TAG, "isExistDiary: 다이어리:" + name + ", " + cursor.getString(2));
+        }
+        cursor.close();
+        db.close();
+        return res;
+    }
+
+
+    public static void InsertPhoneBook(int icon, String name, String num) {
+        db = phoneDBHelper.getWritableDatabase();
+        String sql = "insert into PhoneBook('icon', 'name', 'num') values(?,?,?);";
+        SQLiteStatement st = db.compileStatement(sql);
+        st.bindString(1, "" + icon);
+        st.bindString(2, name);
+        st.bindString(3, num);
+        st.execute();
+        db.close();
+    }
+
+//    public static void UpdatePhoneBook(int icon, String name, String num) {
+//        if (isExistPhoneBook(name)) {
+//            db = phoneDBHelper.getWritableDatabase();
+//            String sql = "UPDATE PhoneBook SET icon=?, num=? WHERE name=?";
+//            SQLiteStatement st = db.compileStatement(sql);
+//            st.bindString(1, ""+icon);
+//            st.bindString(2, name);
+//            st.bindString(3, num);
+//            st.execute();
+//            db.close();
+//        } else {
+//            Log.d(TAG, "UpdateDiary: 다이어리 존재하지 않음");
+//        }
+//    }
+
+    public static void DeletePhoneBook(int icon, String name1, String num1) {
+        db = phoneDBHelper.getWritableDatabase();
+        String sql = "delete from PhoneBook where num = ? and name = ?;";
+        SQLiteStatement st = db.compileStatement(sql);
+        st.bindString(1, num1);
+        st.bindString(2, name1);
+        st.execute();
+        db.close();
+    }
+
+
+    public static ArrayList<PhoneNum> showPhoneBook() {
+        db = phoneDBHelper.getReadableDatabase();
+        ArrayList<PhoneNum> res = new ArrayList<>();
+
+        String sql = "select * from phonebook";
+
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            String icon = cursor.getString(1); // date
+            String name = cursor.getString(2);
+            String num = cursor.getString(3);// content
+            //Log.d(TAG, "showDiary: Show Diary. [Data]: date: " + name + ", content: " + content);
+            res.add(new PhoneNum(Integer.parseInt(icon), name, num));
+        }
+
+        cursor.close();
+        db.close();
+        return res;
     }
 
 }
