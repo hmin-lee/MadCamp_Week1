@@ -21,7 +21,7 @@ public class ImageDetailPagerAdapter extends FragmentPagerAdapter {
 
     public ImageDetailPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
-        items = new ArrayList<Fragment>();
+        items = new ArrayList<>();
         for (int i = 0; i < thumbImages.length; i++) {
             ImageInfo imageInfo = new ImageInfo.Builder(thumbImages[i]).setTitle("제목" + i + ".jpg").setDatetime("2020.07.11").build();
             items.add(new ImageDetailFragment(imageInfo));

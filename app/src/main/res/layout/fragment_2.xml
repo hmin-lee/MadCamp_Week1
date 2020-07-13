@@ -6,16 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment2">
 
-    <GridView
-        android:id="@+id/gridview"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="110dp"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
+        android:id="@+id/recyclerview"
+        />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/image_fab"
         android:layout_width="wrap_content"

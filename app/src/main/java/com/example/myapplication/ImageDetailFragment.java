@@ -13,7 +13,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +34,7 @@ public class ImageDetailFragment extends Fragment {
 
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
- 
+
     Animation translateUpAnim;
     Animation translateDownAnim;
 
@@ -74,7 +73,7 @@ public class ImageDetailFragment extends Fragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 boolean touchEvent = gestureDetector.onTouchEvent(motionEvent);
-                if(touchEvent){
+                if (touchEvent) {
                     System.out.println("Logic is Migrated to Gesture");
                 }
                 return true;
@@ -112,7 +111,7 @@ public class ImageDetailFragment extends Fragment {
                 return false; // Left to right
             }
             if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                if(!isPageOpen){
+                if (!isPageOpen) {
                     slideDesc.setVisibility(View.VISIBLE);
                     slideDesc.startAnimation(translateUpAnim);
                 }
