@@ -238,7 +238,8 @@ public class Fragment3 extends Fragment {
         //String[] result = {"2020,7,10","2017,04,18","2017,05,18","2017,06,18"};
 
 
-        new ApiSimulator(result).executeOnExecutor(Executors.newSingleThreadExecutor());
+        final ApiSimulator showspecialday = new ApiSimulator(result);
+        showspecialday.executeOnExecutor(Executors.newSingleThreadExecutor());
 
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -307,7 +308,7 @@ public class Fragment3 extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String todo = todoText.getText().toString();
                                 if (!Todo.containsKey(key)) {
-                                    result[cntkey] = key;
+                                    showspecialday.onPostExecute(showspecialday.addResult(key));
                                 }
                                 InsertTodo(key, todo);
                                 Todo.put(key, todo);
@@ -414,6 +415,28 @@ public class Fragment3 extends Fragment {
                     calendar.set(year, month - 1, dayy);
                 }
 
+            }
+            return dates;
+        }
+
+        public List<CalendarDay> addResult(String date) {
+            Time_Result[cntkey] = date;
+            cntkey++;
+
+            Calendar calendar = Calendar.getInstance();
+            ArrayList<CalendarDay> dates = new ArrayList<>();
+
+            for (int i = 0; i < Time_Result.length; i++) {
+                if (Time_Result[i] != null) {
+                    CalendarDay day = CalendarDay.from(calendar);
+                    String[] time = Time_Result[i].split(",");
+                    int year = Integer.parseInt(time[0]);
+                    int month = Integer.parseInt(time[1]);
+                    int dayy = Integer.parseInt(time[2]);
+
+                    dates.add(day);
+                    calendar.set(year, month - 1, dayy);
+                }
             }
             return dates;
         }
