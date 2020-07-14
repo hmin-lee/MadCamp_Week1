@@ -10,9 +10,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,6 +35,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -53,11 +59,13 @@ public class Fragment1 extends Fragment {
         return fragment;
     }
 
+
     public ArrayList<PhoneNum> getContacts() {
         ArrayList<PhoneNum> datas = new ArrayList<>();
         ContentResolver resolver = getContext().getContentResolver();
         Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
         String[] projection = new String[]{
+                ContactsContract.CommonDataKinds.Phone.PHOTO_URI,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
                 ContactsContract.CommonDataKinds.Phone.NUMBER
         };
@@ -65,16 +73,30 @@ public class Fragment1 extends Fragment {
         Cursor cursor = resolver.query(phoneUri, projection, null, null, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                int nameIndex = cursor.getColumnIndex(projection[0]);
-                int numberIndex = cursor.getColumnIndex(projection[1]);
+                int photoIndex = cursor.getColumnIndex(projection[0]);
+                int nameIndex = cursor.getColumnIndex(projection[1]);
+                int numberIndex = cursor.getColumnIndex(projection[2]);
 
+                String image_uri = cursor.getString(photoIndex);
+
+                Bitmap bp = BitmapFactory.decodeResource(getResources(), R.drawable.user);
+                if (image_uri != null) {
+
+                    try {
+                        bp = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), Uri.parse(image_uri));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Drawable drawable = new BitmapDrawable(bp);
+//                int dr = getDrawable(drawable);
                 String name = cursor.getString(nameIndex);
                 String number = cursor.getString(numberIndex);
 
-                PhoneNum phone = new PhoneNum(name, number);
-                phone.setIcon(R.drawable.user); //default image from phone data
+//                PhoneNum phone = new PhoneNum(, name, number);
+                //phone.setIcon(R.drawable.user); //default image from phone data
 
-                datas.add(phone);
+//                datas.add(phone);
             }
         }
         assert cursor != null;
@@ -343,13 +365,11 @@ public class Fragment1 extends Fragment {
 
         Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
-            String icon = cursor.getString(1); // date
+            String icon = cursor.getString(1);
             String name = cursor.getString(2);
             String num = cursor.getString(3);// content
-            //Log.d(TAG, "showDiary: Show Diary. [Data]: date: " + name + ", content: " + content);
             res.add(new PhoneNum(Integer.parseInt(icon), name, num));
         }
-
         cursor.close();
         db.close();
         return res;
