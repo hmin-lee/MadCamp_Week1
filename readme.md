@@ -34,6 +34,9 @@
 
 **Hyemin**이란 `develop` branch를 두고, **Hyemin**을 기준으로 PR(Pull Request) 작업을 수행했으며 PR시 Code Review 과정을 거쳐 Approve시 Merge작업을 했습니다. 기능 구현이 완전할 때 `master` branch로 Merge했습니다.
 
+#### 스토리보드
+세번째 탭을 시작하기 앞서, 기본적인 스토리보드를 디자인을 먼저 했습니다. [프로토타입참고](https://www.figma.com/proto/dhskBeSnSTPV0YASGrzDDQ/FlowCamp-ThirdTab?node-id=0%3A1&scaling=scale-down)
+
 ## 설명
 
 ### 1. 연락처
