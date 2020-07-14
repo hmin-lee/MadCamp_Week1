@@ -21,12 +21,12 @@ import java.util.ArrayList;
 public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.ViewHolder> {
     private static final String TAG = "GalleryRecyclerAdapter";
 
-    private ArrayList<Integer> mImages = new ArrayList<>();
+    private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
     private OnGalleryListener mOnGalleryListener;
 
 
-    public GalleryRecyclerAdapter(Context context, ArrayList<Integer> mImages, OnGalleryListener onGalleryListener) {
+    public GalleryRecyclerAdapter(Context context, ArrayList<String> mImages, OnGalleryListener onGalleryListener) {
         this.mContext = context;
         this.mImages = mImages;
         this.mOnGalleryListener = onGalleryListener;
@@ -46,7 +46,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         Log.d(TAG, "onBindViewHolder: 새롭게 생성될 경우");
 
         ImageView imageView = holder.imageView;
-        Integer resourceId = mImages.get(position);
+        String resourceId = mImages.get(position);
 
         Glide.with(mContext).load(resourceId).into(imageView);
 
@@ -59,7 +59,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
     // for clicking on an item
     public interface OnGalleryListener {
-        void onGalleryClick(int position);
+        void onGalleryClick(int position, ArrayList<String> images);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -80,7 +80,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
 
         @Override
         public void onClick(View view) {
-            onGalleryListener.onGalleryClick(getAdapterPosition());
+            onGalleryListener.onGalleryClick(getAdapterPosition(), mImages);
         }
     }
 }

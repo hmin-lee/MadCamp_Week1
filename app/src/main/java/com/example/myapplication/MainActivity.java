@@ -51,6 +51,19 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             tmp += Manifest.permission.READ_EXTERNAL_STORAGE + " ";
         }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            tmp += Manifest.permission.WRITE_CONTACTS + " ";
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            tmp += Manifest.permission.READ_CONTACTS + " ";
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            tmp += Manifest.permission.WRITE_EXTERNAL_STORAGE + " ";
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            tmp += Manifest.permission.CAMERA + " ";
+        }
+
         if (!TextUtils.isEmpty(tmp)) { // 권한 요청
             ActivityCompat.requestPermissions(this, tmp.trim().split(" "), 1);
         } else { // 모두 허용 상태
