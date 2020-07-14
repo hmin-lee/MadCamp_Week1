@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGalleryListener {
     private static final String TAG = "Fragment2_1";
@@ -130,7 +131,8 @@ public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGall
 
     private File createImageFile() throws IOException {
         // Create an Image File name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        // TODO: 만약 디렉토리가 존재하지 않는 경우
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File imagePath = new File(myContext.getFilesDir(), "images");
         File image = File.createTempFile(
