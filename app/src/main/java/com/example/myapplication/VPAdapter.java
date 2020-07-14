@@ -1,9 +1,14 @@
 package com.example.myapplication;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
@@ -18,9 +23,9 @@ public class VPAdapter extends FragmentPagerAdapter {
         items.add(new Fragment2());
         items.add(new Fragment3());
 
-        itext.add("전화번호");
-        itext.add("사진");
-        itext.add("다이어리");
+        itext.add("Phone");
+        itext.add("Gallery");
+        itext.add("Diary");
     }
 
     @NonNull
@@ -37,4 +42,6 @@ public class VPAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return items.size();
     }
+
+
 }
