@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 
 public class Fragment3 extends Fragment {
     private static final String TAG = "Fragment3";
@@ -165,7 +166,7 @@ public class Fragment3 extends Fragment {
         while (cursor.moveToNext()) {
             String date = cursor.getString(1); // date
             String content = cursor.getString(2); // content
-            Log.d(TAG, "showDiary: Show Diary. [Data]: date: " + date + ", content: " + content);
+//            Log.d(TAG, "showDiary: Show Diary. [Data]: date: " + date + ", content: " + content);
             res.put(date, content);
         }
 
@@ -185,7 +186,7 @@ public class Fragment3 extends Fragment {
         while (cursor.moveToNext()) {
             String date = cursor.getString(1); // date
             String content = cursor.getString(2); // content
-            Log.d(TAG, "showTodo: Show Todo. [Data]: date: " + date + ", content: " + content);
+//            Log.d(TAG, "showTodo: Show Todo. [Data]: date: " + date + ", content: " + content);
             res.put(date, content);
         }
 
@@ -207,7 +208,7 @@ public class Fragment3 extends Fragment {
 
         Diary = showDiary();
         Todo = showTodo();
-
+        cntkey = 0;
         for (String key : Todo.keySet()) {
             result[cntkey] = key;
             cntkey++;
@@ -257,19 +258,12 @@ public class Fragment3 extends Fragment {
         //String[] result = {"2020,7,10","2017,04,18","2017,05,18","2017,06,18"};
 
 
-        for (String ke : Todo.keySet()) {
-            Log.d(TAG, "onCreateView: "+ke+"일의 월요일"+Todo.get(ke));
-        }
         showspecialday = new ApiSimulator(result);
         ArrayList<CalendarDay> reulst = showspecialday.getResult();
-        Log.d(TAG, "onCreateView: >>>>>CalendarDay START");
-        for (CalendarDay calendarDay : reulst) {
-            Log.d(TAG, "onCreateView: >>>>>>>calendarDay:"+calendarDay.toString());
-        }
+
         materialCalendarView.addDecorators(new EventDecorator(Color.rgb(142, 77, 234), reulst));
 
-//        showspecialday.executeOnExecutor(Executors.newSingleThreadExecutor());
-
+        showspecialday.executeOnExecutor(Executors.newSingleThreadExecutor());
 
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -339,7 +333,6 @@ public class Fragment3 extends Fragment {
                                 String todo = todoText.getText().toString();
                                 if (!Todo.containsKey(key)) {
                                     materialCalendarView.addDecorators(new EventDecorator(Color.rgb(142, 77, 234), showspecialday.addResult(key)));
-//                                    showspecialday.executeOnExecutor(Executors.newSingleThreadExecutor());
                                 }
 
                                 InsertTodo(key, todo);
@@ -421,6 +414,7 @@ public class Fragment3 extends Fragment {
             this.Time_Result = Time_Result;
         }
 
+
         @Override
         protected List<CalendarDay> doInBackground(@NonNull Void... voids) {
             try {
@@ -438,35 +432,32 @@ public class Fragment3 extends Fragment {
 
             for (int i = 0; i < Time_Result.length; i++) {
                 if (Time_Result[i] != null) {
-
-                    CalendarDay day = CalendarDay.from(calendar);
                     String[] time = Time_Result[i].split(",");
                     int year = Integer.parseInt(time[0]);
                     int month = Integer.parseInt(time[1]);
                     int dayy = Integer.parseInt(time[2]);
-
-                    dates.add(day);
+                    CalendarDay day = CalendarDay.from(calendar);
                     calendar.set(year, month - 1, dayy);
+                    dates.add(day);
                 }
 
             }
             return dates;
         }
 
-        public ArrayList<CalendarDay> getResult(){
+        public ArrayList<CalendarDay> getResult() {
             Calendar calendar = Calendar.getInstance();
             ArrayList<CalendarDay> dates = new ArrayList<>();
 
             for (int i = 0; i < Time_Result.length; i++) {
                 if (Time_Result[i] != null) {
-                    CalendarDay day = CalendarDay.from(calendar);
                     String[] time = Time_Result[i].split(",");
                     int year = Integer.parseInt(time[0]);
                     int month = Integer.parseInt(time[1]);
                     int dayy = Integer.parseInt(time[2]);
-
-                    dates.add(day);
                     calendar.set(year, month - 1, dayy);
+                    CalendarDay day = CalendarDay.from(calendar);
+                    dates.add(day);
                 }
             }
             return dates;
@@ -481,14 +472,13 @@ public class Fragment3 extends Fragment {
 
             for (int i = 0; i < Time_Result.length; i++) {
                 if (Time_Result[i] != null) {
-                    CalendarDay day = CalendarDay.from(calendar);
                     String[] time = Time_Result[i].split(",");
                     int year = Integer.parseInt(time[0]);
                     int month = Integer.parseInt(time[1]);
                     int dayy = Integer.parseInt(time[2]);
-
-                    dates.add(day);
+                    CalendarDay day = CalendarDay.from(calendar);
                     calendar.set(year, month - 1, dayy);
+                    dates.add(day);
                 }
             }
             return dates;
