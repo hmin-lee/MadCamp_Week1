@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,6 +53,11 @@ public class Fragment3 extends Fragment {
     ImageButton lockButton;
     LinearLayout contentLayout;
     EditText pwEditText;
+
+    private SoundPool soundPool;
+    int soundPlay;
+    int soundPlay_fail;
+
     public Fragment3() {
     }
 
@@ -211,6 +218,9 @@ public class Fragment3 extends Fragment {
         Log.d(TAG, ">>> onCreate: DiaryDBHelper 생성");
         diaryDBHelper = new DiaryDBHelper(getContext());
         toDoDBHelper = new ToDoDBHelper(getContext());
+        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        soundPlay = soundPool.load(getContext(), R.raw.unlock, 1);
+        soundPlay_fail = soundPool.load(getContext(), R.raw.unlock_fail, 1);
 //        db = dbHelper.getReadableDatabase();
 //        dbHelper.onUpgrade(db, 1, 1); // test용
 //        db.close();
@@ -350,10 +360,12 @@ public class Fragment3 extends Fragment {
                                 Toast.makeText(getContext(), "UnLock!", Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "onCreateView: 비밀번호 맞음");
                                 isLocked = false;
+                                soundPool.play(soundPlay, 1f, 1f, 0, 0, 1f);
                                 lockButton.setSelected(true);
                                 contentLayout.setVisibility(View.VISIBLE);
                             } else {
                                 Toast.makeText(getContext(), "비번틀림!", Toast.LENGTH_SHORT).show();
+                                soundPool.play(soundPlay_fail, 1f, 1f, 0, 0, 1f);
                                 Log.d(TAG, "onCreateView: 비밀번호 틀림");
                             }
                         }
