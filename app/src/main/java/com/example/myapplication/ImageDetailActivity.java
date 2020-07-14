@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import java.util.ArrayList;
+
 public class ImageDetailActivity extends FragmentActivity {
 
     @SuppressLint("ClickableViewAccessibility")
@@ -17,9 +19,10 @@ public class ImageDetailActivity extends FragmentActivity {
         setContentView(R.layout.image_detail_activity);
         Intent intent = getIntent();
         int position = intent.getExtras().getInt("id");
+        ArrayList<String> mImages = intent.getExtras().getStringArrayList("images");
 
         ViewPager vp = findViewById(R.id.image_pager);
-        ImageDetailPagerAdapter adapter = new ImageDetailPagerAdapter(getSupportFragmentManager());
+        ImageDetailPagerAdapter adapter = new ImageDetailPagerAdapter(getSupportFragmentManager(), mImages);
         vp.setAdapter(adapter);
         vp.setCurrentItem(position);
 

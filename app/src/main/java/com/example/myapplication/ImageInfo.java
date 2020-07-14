@@ -1,7 +1,7 @@
 package com.example.myapplication;
 
 public class ImageInfo {
-    private Integer resId;
+    private String resId;
     private String title;
     private String datetime;
 
@@ -9,7 +9,7 @@ public class ImageInfo {
 
     }
 
-    public Integer getResId() {
+    public String getResId() {
         return resId;
     }
 
@@ -22,11 +22,11 @@ public class ImageInfo {
     }
 
     public static class Builder {
-        private int resId; //반드시 필요
+        private String resId; //반드시 필요
         private String title; //선택
         private String datetime; //선택
 
-        public Builder(int resId) {
+        public Builder(String resId) {
             this.resId = resId;
         }
 

@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Objects;
 
 public class ImageDetailFragment extends Fragment {
@@ -31,7 +33,7 @@ public class ImageDetailFragment extends Fragment {
     boolean isPageOpen = false;
     Animation translateUpAnim;
     Animation translateDownAnim;
-    private Integer CUR_IMG = 0;
+    private String CUR_IMG = "";
     private ImageInfo CUR_INFO;
 
     public ImageDetailFragment(ImageInfo info) {
@@ -54,7 +56,8 @@ public class ImageDetailFragment extends Fragment {
         TextView textViewTitle = myView.findViewById(R.id.image_detail_title);
         TextView textViewDatetime = myView.findViewById(R.id.image_detail_datetime);
 
-        imageView.setImageResource(CUR_INFO.getResId());
+//        imageView.setImageResource(CUR_INFO.getResId());
+        Glide.with(myContext).load(CUR_IMG).into(imageView);
         textViewTitle.setText(CUR_INFO.getTitle());
         textViewDatetime.setText(CUR_INFO.getDatetime());
 
