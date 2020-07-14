@@ -14,7 +14,7 @@ public class PhoneDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE PhoneBook (`pk` INTEGER PRIMARY KEY AUTOINCREMENT,`icon` TEXT,`name` TEXT,`num` TEXT);";
+        String sql = "CREATE TABLE PhoneBook (`pk` INTEGER PRIMARY KEY AUTOINCREMENT,`icon` TEXT,`URI` TEXT,`name` TEXT,`num` TEXT);";
         Log.d(TAG, "onCreate: PhoneBook DB를 생성함");
         db.execSQL(sql);
     }

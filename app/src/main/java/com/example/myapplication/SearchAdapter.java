@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 
@@ -45,11 +47,11 @@ public class SearchAdapter extends BaseAdapter {
     public PhoneNum getItem(int position) {
         return list.get(position);
     }
-
-    public void addNum(int icon, String name, String number) {
-        PhoneNum item = new PhoneNum(icon, name, number);
-        list.add(item);
-    }
+//
+//    public void addNum(int icon, String name, String number) {
+//        PhoneNum item = new PhoneNum(icon, name, number);
+//        list.add(item);
+//    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
@@ -65,9 +67,18 @@ public class SearchAdapter extends BaseAdapter {
         } else {
             viewHolder = (UserViewHolder) convertView.getTag();
         }
-
+        if (list.get(position).getIcon() != 0){
+            System.out.println(">>>>>>>>>list.get(position).getIcon() != 0");
+            Glide.with(mContext).load(list.get(position).getIcon()).into(viewHolder.txticon);
+        }else{
+            System.out.println(">>>>>>>>>list.get(position).getIcon() == 0: "+list.get(position).getIconUri());
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+list.get(position).getIcon());
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+list.get(position).getUserName());
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>:"+list.get(position).toString());
+            Glide.with(mContext).load(list.get(position).getIconUri()).into(viewHolder.txticon);
+        }
         // 리스트에 있는 데이터를 리스트뷰 셀에 뿌린다.
-        viewHolder.txticon.setImageResource(list.get(position).getIcon());
+        //viewHolder.txticon.setImageResource(list.get(position).getIcon());
         viewHolder.txtname.setText(list.get(position).getUserName());
 
         return convertView;

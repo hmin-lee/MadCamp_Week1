@@ -41,6 +41,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import com.bumptech.glide.Glide;
 
 import static android.content.ContentValues.TAG;
 
@@ -78,25 +79,15 @@ public class Fragment1 extends Fragment {
                 int numberIndex = cursor.getColumnIndex(projection[2]);
 
                 String image_uri = cursor.getString(photoIndex);
-
-                Bitmap bp = BitmapFactory.decodeResource(getResources(), R.drawable.user);
-                if (image_uri != null) {
-
-                    try {
-                        bp = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), Uri.parse(image_uri));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Drawable drawable = new BitmapDrawable(bp);
-//                int dr = getDrawable(drawable);
                 String name = cursor.getString(nameIndex);
                 String number = cursor.getString(numberIndex);
 
-//                PhoneNum phone = new PhoneNum(, name, number);
-                //phone.setIcon(R.drawable.user); //default image from phone data
+                PhoneNum phone = new PhoneNum(image_uri, name, number);
 
-//                datas.add(phone);
+                if (image_uri == null){
+                    phone.setIcon(R.drawable.user);
+                }
+                datas.add(phone);
             }
         }
         assert cursor != null;
@@ -135,8 +126,14 @@ public class Fragment1 extends Fragment {
                 for (int i = 0; i < size; i++) {
                     PhoneNum phone = phoneBooks.get(i);
                     phonenum.add(phone);
-                    InsertPhoneBook(phone.getIcon(), phone.getUserName(), phone.getNum());
-                }
+                    if (phone.getIconUri() == null){
+                        InsertPhoneBook(phone.getIcon(), "a", phone.getUserName(), phone.getNum());
+                    }else{
+                        InsertPhoneBook(phone.getIcon(), phone.getIconUri(), phone.getUserName(), phone.getNum());
+
+                    }
+
+            }
             }
         }
         phonebook = showPhoneBook();
@@ -174,7 +171,7 @@ public class Fragment1 extends Fragment {
 
                 //int drawable = getResources().getDrawable(id,null);
                 phonenum.add(new PhoneNum(id, name, num));
-                InsertPhoneBook(id, name, num);
+                InsertPhoneBook(id, "a", name, num);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -227,12 +224,14 @@ public class Fragment1 extends Fragment {
 
                 String num = item.getNum();
                 String userName = item.getUserName();
+                String uri = item.getIconUri();
                 int icon = item.getIcon();
 
                 Intent i = new Intent(phoneContext, FullPhoneActivity.class);
                 i.putExtra("phone_num", num);
                 i.putExtra("user_name", userName);
                 i.putExtra("icon", icon);
+                i.putExtra("uri", uri);
                 startActivity(i);
             }
         });
@@ -244,10 +243,9 @@ public class Fragment1 extends Fragment {
 
                 String num = item.getNum();
                 final String userName = item.getUserName();
-                int icon = item.getIcon();
 
                 phonebook.remove(item);
-                DeletePhoneBook(icon, userName, num);
+                DeletePhoneBook(userName, num);
                 adapter2.notifyDataSetChanged();
 
                 return true;
@@ -270,11 +268,11 @@ public class Fragment1 extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String name = nameText.getText().toString();
                         String num = numText.getText().toString();
-                        phonenum.add(new PhoneNum(R.drawable.user, name, num));
-                        InsertPhoneBook(R.drawable.user, name, num);
+//                        phonenum.add(new PhoneNum(R.drawable.user, name, num));
+                        InsertPhoneBook(R.drawable.user,"a", name, num);
                         phonebook.add(new PhoneNum(R.drawable.user, name, num));
+                        phonenum2.add(new PhoneNum(R.drawable.user, name, num));
                         adapter2.notifyDataSetChanged();
-
                     }
                 });
                 alertDialog.show();
@@ -320,13 +318,14 @@ public class Fragment1 extends Fragment {
     }
 
 
-    public static void InsertPhoneBook(int icon, String name, String num) {
+    public static void InsertPhoneBook(int icon, String uri, String name, String num) {
         db = phoneDBHelper.getWritableDatabase();
-        String sql = "insert into PhoneBook('icon', 'name', 'num') values(?,?,?);";
+        String sql = "insert into PhoneBook('icon', 'uri','name', 'num') values(?,?,?,?);";
         SQLiteStatement st = db.compileStatement(sql);
         st.bindString(1, "" + icon);
-        st.bindString(2, name);
-        st.bindString(3, num);
+        st.bindString(2, uri);
+        st.bindString(3, name);
+        st.bindString(4, num);
         st.execute();
         db.close();
     }
@@ -346,7 +345,7 @@ public class Fragment1 extends Fragment {
 //        }
 //    }
 
-    public static void DeletePhoneBook(int icon, String name1, String num1) {
+    public static void DeletePhoneBook(String name1, String num1) {
         db = phoneDBHelper.getWritableDatabase();
         String sql = "delete from PhoneBook where num = ? and name = ?;";
         SQLiteStatement st = db.compileStatement(sql);
@@ -366,9 +365,10 @@ public class Fragment1 extends Fragment {
         Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
             String icon = cursor.getString(1);
-            String name = cursor.getString(2);
-            String num = cursor.getString(3);// content
-            res.add(new PhoneNum(Integer.parseInt(icon), name, num));
+            String uri = cursor.getString(2);
+            String name = cursor.getString(3);
+            String num = cursor.getString(4);
+            res.add(new PhoneNum(Integer.parseInt(icon), uri,  name, num));
         }
         cursor.close();
         db.close();

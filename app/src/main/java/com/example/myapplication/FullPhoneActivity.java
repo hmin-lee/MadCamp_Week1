@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Objects;
 
 public class FullPhoneActivity extends Activity {
@@ -24,12 +26,18 @@ public class FullPhoneActivity extends Activity {
 
         final String num = Objects.requireNonNull(intent.getExtras()).getString("phone_num");
         String userName = Objects.requireNonNull(intent.getExtras()).getString("user_name");
+        String uri = Objects.requireNonNull(intent.getExtras()).getString("uri");
         int icon = Objects.requireNonNull(intent.getExtras()).getInt("icon");
 
         ImageView iconImageView = findViewById(R.id.imageView_detail);
         TextView nameTextView = findViewById(R.id.textView_detail1);
         TextView numTextView = findViewById(R.id.textView_detail2);
 
+        if (icon != 0){
+            iconImageView.setImageResource(icon);
+        }else{
+            Glide.with(this).load(uri).into(iconImageView);
+        }
         iconImageView.setImageResource(icon);
         nameTextView.setText(userName);
         numTextView.setText(num);
