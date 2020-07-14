@@ -38,7 +38,7 @@ public class FullPhoneActivity extends Activity {
         }else{
             Glide.with(this).load(uri).into(iconImageView);
         }
-        iconImageView.setImageResource(icon);
+        //iconImageView.setImageResource(icon);
         nameTextView.setText(userName);
         numTextView.setText(num);
 

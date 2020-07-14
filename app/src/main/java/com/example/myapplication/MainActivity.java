@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,6 +16,10 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +36,36 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tab = findViewById(R.id.tab);
         tab.setupWithViewPager(vp);
 
+        ArrayList<Integer> images = new ArrayList<>();
+        images.add(R.drawable.icon_phone);
+        images.add(R.drawable.icon_gallery);
+        images.add(R.drawable.icon_diary);
+
+
+        for(int i=0; i<3; i++){
+            tab.getTabAt(i).setIcon(images.get(i));
+        }
+
+        Objects.requireNonNull(tab.getTabAt(0).getIcon()).setColorFilter(Color.parseColor("#8E4DEA"), PorterDuff.Mode.SRC_ATOP);
+        Objects.requireNonNull(tab.getTabAt(1).getIcon()).setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_ATOP);
+        Objects.requireNonNull(tab.getTabAt(2).getIcon()).setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_ATOP);
+
+        tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tab.getIcon().setColorFilter(Color.parseColor("#8E4DEA"), PorterDuff.Mode.SRC_ATOP);
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                tab.getIcon().setColorFilter(Color.parseColor("#a8a8a8"), PorterDuff.Mode.SRC_ATOP);
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
+
 
     //권한에 대한 응답이 있을때 작동하는 함수
     @Override
