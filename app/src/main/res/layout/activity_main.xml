@@ -11,10 +11,10 @@
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/colorPrimary"
-        app:tabIndicatorColor="@android:color/holo_blue_dark"
-        app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/white"
+        app:tabBackground="@android:color/white"
+        app:tabIndicatorColor="#8E4DEA"
+        app:tabSelectedTextColor="#8E4DEA"
+        app:tabTextColor="@android:color/darker_gray"
         >
 
         <com.google.android.material.tabs.TabItem
