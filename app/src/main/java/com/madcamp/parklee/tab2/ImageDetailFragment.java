@@ -57,7 +57,6 @@ public class ImageDetailFragment extends Fragment {
         TextView textViewTitle = myView.findViewById(R.id.image_detail_title);
         TextView textViewDatetime = myView.findViewById(R.id.image_detail_datetime);
 
-//        imageView.setImageResource(CUR_INFO.getResId());
         Glide.with(myContext).load(CUR_IMG).into(imageView);
         textViewTitle.setText(CUR_INFO.getTitle());
         textViewDatetime.setText(CUR_INFO.getDatetime());
