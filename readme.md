@@ -22,9 +22,9 @@
 
 ### 요약
 
-![image-20200714234746476](.\docs\summary.jpg)
+<img src=".\docs\summary.jpg" alt="git-flow_overall_graph" style="zoom:80%;" />
 
-![image-20200714211008397](.\docs\git_summary.jpg)
+<img src=".\docs\git_summary.jpg" alt="git-flow_overall_graph" style="zoom: 80%;" />
 
 #### 개발 Flow
 
