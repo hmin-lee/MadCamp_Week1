@@ -22,30 +22,15 @@
 
 ### 요약
 
-초반에 github의 사용법을 익히기 위한 일종의 더미 커밋, PR, Merge 존재.
+![image-20200714234746476](.\docs\summary.jpg)
 
-
-
-총 21.java+ 29.xml
-
-26번의 Merge
-
-총 3개의 화면. java 2091 lines
-total 995 lines -> `find . -name '*.*' | xargs wc -l` 명령어 기준
-
-총 88번 커밋
-
-레이아웃 15개
-
-액티비티 Main, Splash, FullPhone, Gallery 4개
-
-![image-20200714211008397](C:\Users\q\Desktop\안드로이드\image-20200714211008397.png)
+![image-20200714211008397](.\docs\git_summary.jpg)
 
 #### 개발 Flow
 
 **Git Flow**를 활용했습니다. 
 
-<img src="C:\Users\q\Desktop\안드로이드\git-flow_overall_graph.png" alt="git-flow_overall_graph" style="zoom: 50%;" />
+<img src=".\docs\git-flow_overall_graph.png" alt="git-flow_overall_graph" style="zoom: 50%;" />
 
 **Hyemin**이란 `develop` branch를 두고, **Hyemin**을 기준으로 PR(Pull Request) 작업을 수행했으며 PR시 Code Review 과정을 거쳐 Approve시 Merge작업을 했습니다. 기능 구현이 완전할 때 `master` branch로 Merge했습니다.
 
@@ -79,12 +64,6 @@ total 995 lines -> `find . -name '*.*' | xargs wc -l` 명령어 기준
 - To-Do 있는 날짜에 보라색 점 추가
 - 앱 사용 중 재미를 위한 효과음
 - DB와 연결하여 앱 나갔다가 들어와도 갱신된 데이터 유지
-
-### 기술
-
-* 핸드폰 연락처의 사진, 이름, 전화번호 연동
-  * 
-* JSON 파일에서 사진, 이름, 전화번호 연동
 
 
 
