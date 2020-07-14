@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab2;
 
 import android.util.Log;
 

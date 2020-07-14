@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab3;
 
 import android.app.Activity;
 

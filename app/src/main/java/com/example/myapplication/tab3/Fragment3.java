@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab3;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;

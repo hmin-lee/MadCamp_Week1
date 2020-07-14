@@ -34,8 +34,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ImageDetailActivity" />
-        <activity android:name=".FullPhoneActivity" />
+        <activity android:name=".tab2.ImageDetailActivity" />
+        <activity android:name=".tab1.FullPhoneActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

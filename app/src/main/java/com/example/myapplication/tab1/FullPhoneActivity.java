@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab1;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
 
 import java.util.Objects;
 
