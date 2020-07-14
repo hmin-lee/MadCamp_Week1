@@ -1,9 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.tab2;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;

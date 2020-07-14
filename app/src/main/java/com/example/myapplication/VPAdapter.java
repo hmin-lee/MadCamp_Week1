@@ -1,14 +1,13 @@
 package com.example.myapplication;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.google.android.material.tabs.TabLayout;
+import com.example.myapplication.tab1.Fragment1;
+import com.example.myapplication.tab2.Fragment2;
+import com.example.myapplication.tab3.Fragment3;
 
 import java.util.ArrayList;
 

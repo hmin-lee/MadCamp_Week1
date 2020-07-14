@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab2;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
+
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 

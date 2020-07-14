@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
 
 import java.util.Objects;
 

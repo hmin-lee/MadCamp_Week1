@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab1;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
+import com.example.myapplication.tab1.PhoneNum;
 
 import java.util.ArrayList;
 

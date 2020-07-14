@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab3;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

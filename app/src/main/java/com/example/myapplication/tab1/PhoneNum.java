@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.tab1;
 
 public class PhoneNum {
     private String userName;
