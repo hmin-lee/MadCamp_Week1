@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.myapplication">
+    package="com.madcamp.parklee">
     <!-- Contact 권한-->
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -21,16 +21,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SplashActivity">
+        <activity android:name="com.madcamp.parklee.MainActivity"/>
+        <activity android:name="com.madcamp.parklee.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".tab2.ImageDetailActivity" />
-        <activity android:name=".tab1.FullPhoneActivity" />
+        <activity android:name="com.madcamp.parklee.tab2.ImageDetailActivity" />
+        <activity android:name="com.madcamp.parklee.tab1.FullPhoneActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
