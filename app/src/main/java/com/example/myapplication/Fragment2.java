@@ -117,7 +117,6 @@ public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGall
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(getContext(), "FAB 클릭!! 구현 안함...ㅎ", Toast.LENGTH_SHORT).show();
             try {
                 dispatchTakePictureIntent();
 
@@ -131,10 +130,14 @@ public class Fragment2 extends Fragment implements GalleryRecyclerAdapter.OnGall
 
     private File createImageFile() throws IOException {
         // Create an Image File name
-        // TODO: 만약 디렉토리가 존재하지 않는 경우
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File imagePath = new File(myContext.getFilesDir(), "images");
+        if(!imagePath.exists()){
+            Log.d(TAG, "getImagesFromStorage: Image Folder doesn't exist. Create one.");
+            imagePath.mkdir();
+        }
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
