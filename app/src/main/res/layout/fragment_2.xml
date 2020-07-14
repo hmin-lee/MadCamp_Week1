@@ -19,7 +19,7 @@
         android:src="@drawable/ic_baseline_add_photo_alternate_24"
         android:contentDescription="FAB for adding Photo"
         android:layout_margin="16dp"
-        app:backgroundTint="@android:color/holo_orange_light"
+        app:backgroundTint="#8E4DEA"
         />
 
 </FrameLayout>

@@ -15,7 +15,9 @@
             android:id="@+id/editSearch"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:hint="  Search the User!"/>
+            android:hint="  Search the User!"
+            app:backgroundTint = "#8E4DEA"
+            />
 
         <ListView
             android:id="@+id/listView"
@@ -31,7 +33,7 @@
         android:src="@drawable/add"
         android:contentDescription="FAB for adding Photo"
         android:layout_margin="16dp"
-        app:backgroundTint="@android:color/holo_purple"
+        app:backgroundTint="#8E4DEA"
         />
 
     </FrameLayout>

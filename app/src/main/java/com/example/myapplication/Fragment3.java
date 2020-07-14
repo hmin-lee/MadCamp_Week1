@@ -424,7 +424,7 @@ public class Fragment3 extends Fragment {
             if (Objects.requireNonNull(getActivity()).isFinishing()) {
                 return;
             }
-            materialCalendarView.addDecorator(new EventDecorator(Color.rgb(244, 201, 107), calendarDays, getActivity()));
+            materialCalendarView.addDecorator(new EventDecorator(Color.rgb(142, 77, 234), calendarDays, getActivity()));
         }
     }
 
